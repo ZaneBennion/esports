@@ -46,6 +46,16 @@ body {
   letter-spacing: 0.5px;
 }
 
+.game-logo-container {
+  display: flex;
+  align-items: center;
+  height: 32px;
+}
+
+.game-logo {
+  object-fit: contain;
+}
+
 .schedule-grid {
   position: relative;
   display: grid;

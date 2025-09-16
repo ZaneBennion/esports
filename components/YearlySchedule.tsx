@@ -1,4 +1,5 @@
 import { getSupabaseServerClient } from "@/lib/supabase/server";
+import GameLogo from "./GameLogo";
 
 type EventRow = {
   id: string;
@@ -79,7 +80,9 @@ export default async function YearlySchedule({
   return (
     <div className="schedule-row">
       <div className="schedule-head">
-        <div className="schedule-title">{game}</div>
+        <div className="schedule-title">
+          <GameLogo game={game} />
+        </div>
       </div>
       <div className="schedule-grid">
         {/* Month headers */}
