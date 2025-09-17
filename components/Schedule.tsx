@@ -1,8 +1,9 @@
 "use client";
 
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useId } from "react";
 import GameLogo from "./GameLogo";
 import { useEvents } from "@/hooks/useEvents";
+import { useScrollContext } from "@/contexts/ScrollContext";
 import "./Schedule.css";
 
 type ScheduleProps = {
@@ -43,6 +44,7 @@ export default function Schedule({
   autoScrollToToday = true 
 }: ScheduleProps) {
   const scrollerRef = useRef<HTMLDivElement>(null);
+  const componentId = useId();
   const targetYear = year ?? new Date().getUTCFullYear();
   const totalDays = daysInYear(targetYear);
   const today = new Date();
@@ -53,21 +55,37 @@ export default function Schedule({
 
   // Fetch events for the specified game and year
   const { events, loading, error } = useEvents(game || "", targetYear);
+  
+  // Get scroll context for synchronized scrolling
+  const { registerScroller, unregisterScroller, scrollToPosition, scrollToToday } = useScrollContext();
 
-  // Scroll to a specific position (0-100 percentage)
-  const scrollToPosition = (percentage: number) => {
+  // Register this scroller with the context
+  useEffect(() => {
     if (scrollerRef.current) {
-      const maxScroll = scrollerRef.current.scrollWidth - scrollerRef.current.clientWidth;
-      scrollerRef.current.scrollLeft = maxScroll * (percentage / 100);
+      registerScroller(componentId, scrollerRef.current);
+      return () => unregisterScroller(componentId);
     }
-  };
+  }, [componentId, registerScroller, unregisterScroller]);
 
-  // Scroll to today's position
-  const scrollToToday = () => {
-    if (todayPercent !== null) {
-      scrollToPosition(todayPercent);
-    }
-  };
+  // Handle scroll synchronization
+  useEffect(() => {
+    const scroller = scrollerRef.current;
+    if (!scroller) return;
+
+    const handleScroll = () => {
+      // Calculate current scroll percentage
+      const maxScroll = scroller.scrollWidth - scroller.clientWidth;
+      if (maxScroll > 0) {
+        const scrollPercentage = (scroller.scrollLeft / maxScroll) * 100;
+        
+        // Sync all other scrollers to this position
+        scrollToPosition(scrollPercentage);
+      }
+    };
+
+    scroller.addEventListener('scroll', handleScroll);
+    return () => scroller.removeEventListener('scroll', handleScroll);
+  }, [scrollToPosition]);
 
   // Handle automatic scrolling on mount
   useEffect(() => {
@@ -78,7 +96,7 @@ export default function Schedule({
         scrollToPosition(initialScrollPosition);
       }
     }
-  }, [autoScrollToToday, initialScrollPosition, todayPercent]);
+  }, [autoScrollToToday, initialScrollPosition, todayPercent, scrollToToday, scrollToPosition]);
 
   return (
     <div className="schedule">
