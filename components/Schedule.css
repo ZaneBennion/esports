@@ -2,13 +2,13 @@
     display: flex;
     flex-direction: row;
     height: 150px;
-    padding-bottom: 12px;
     align-items: center;
 }
 
 .schedule__title {
   font-weight: 700;
   letter-spacing: 0.5px;
+  width: 44px;
   padding-right: 12px;
   flex: 0 0 auto;
 }
@@ -17,14 +17,24 @@
     flex: 1 1 auto;
     min-width: 0;
     height: 100%;
+    border: 1px solid #e5e7eb;
+    
     overflow-x: auto;
     overflow-y: hidden;
     -webkit-overflow-scrolling: touch;
+    border-radius: 12px;
+    /* Hide scrollbar but keep scrolling functionality */
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* Internet Explorer 10+ */
+}
+
+.schedule__scroller::-webkit-scrollbar {
+    display: none; /* WebKit browsers (Chrome, Safari, Edge) */
 }
 
 .year-bar {
     background-color: #476ebc;
-    width: 1200px;
+    width: 1500px;
     height: 100%;
     position: relative;
     border-radius: 12px;
