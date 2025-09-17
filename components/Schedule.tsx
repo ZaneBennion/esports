@@ -33,15 +33,17 @@ export default function Schedule({ game, year }: ScheduleProps) {
         <div className="schedule__title">
           {game ? <GameLogo game={game} /> : null}
         </div>
-        <div className="year-bar">
-          {showToday && todayPercent !== null && (
-            <div
-              className="today-marker"
-              style={{
-                left: `${todayPercent}%`,
-              }}
-            />
-          )}
+        <div className="schedule__scroller">
+          <div className="year-bar">
+            {showToday && todayPercent !== null && (
+              <div
+                className="today-marker"
+                style={{
+                  left: `${todayPercent}%`,
+                }}
+              />
+            )}
+          </div>
         </div>
       </div>
   );
