@@ -1,3 +1,4 @@
+import Schedule from "@/components/Schedule";
 import YearlySchedule from "@/components/YearlySchedule";
 
 export default function Page() {
@@ -18,7 +19,7 @@ export default function Page() {
       <div style={{ opacity: 0.8, marginBottom: 24 }}>Events by game</div>
       <div>
         {games.map((g) => (
-          <YearlySchedule key={g} year={year} game={g} />
+          <Schedule key={g} year={year} game={g} />
         ))}
       </div>
     </main>
