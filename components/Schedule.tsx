@@ -2,6 +2,7 @@
 
 import { useRef, useEffect } from "react";
 import GameLogo from "./GameLogo";
+import { useEvents } from "@/hooks/useEvents";
 import "./Schedule.css";
 
 type ScheduleProps = {
@@ -24,6 +25,17 @@ function getDayOfYearUtc(date: Date): number {
   return Math.floor(diff) + 1; // 1..366
 }
 
+function getDayOfYear(dateIso: string): number {
+  const d = new Date(dateIso + "T00:00:00Z");
+  const start = Date.UTC(d.getUTCFullYear(), 0, 1);
+  const diff = (d.getTime() - start) / (1000 * 60 * 60 * 24);
+  return Math.floor(diff) + 1; // 1..366
+}
+
+function clamp(min: number, v: number, max: number) {
+  return Math.max(min, Math.min(max, v));
+}
+
 export default function Schedule({ 
   game, 
   year, 
@@ -38,6 +50,9 @@ export default function Schedule({
   const todayPercent = showToday
     ? (getDayOfYearUtc(today) / totalDays) * 100
     : null;
+
+  // Fetch events for the specified game and year
+  const { events, loading, error } = useEvents(game || "", targetYear);
 
   // Scroll to a specific position (0-100 percentage)
   const scrollToPosition = (percentage: number) => {
@@ -72,6 +87,35 @@ export default function Schedule({
         </div>
         <div className="schedule__scroller" ref={scrollerRef}>
           <div className="year-bar">
+            {/* Event blocks */}
+            {events.map((event) => {
+              const start = clamp(1, getDayOfYear(event.start_date), totalDays);
+              const end = clamp(start, getDayOfYear(event.end_date), totalDays);
+              const left = (start / totalDays) * 100;
+              const width = ((end - start + 1) / totalDays) * 100;
+              const title = `${event.name} — ${event.location}`;
+              const startDate = new Date(event.start_date).toLocaleDateString();
+              const endDate = new Date(event.end_date).toLocaleDateString();
+              
+              return (
+                <div
+                  key={event.id}
+                  className="event-block"
+                  style={{ left: `${left}%`, width: `${width}%` }}
+                  title={title}
+                >
+                  <div className="event-block__content">
+                    <div className="event-block__name">{event.name}</div>
+                    <div className="event-block__location">{event.location}</div>
+                    <div className="event-block__dates">
+                      {startDate === endDate ? startDate : `${startDate} - ${endDate}`}
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+            
+            {/* Today marker */}
             {showToday && todayPercent !== null && (
               <div
                 className="today-marker"
