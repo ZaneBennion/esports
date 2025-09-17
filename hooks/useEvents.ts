@@ -11,6 +11,7 @@ export type EventRow = {
   start_date: string; // ISO yyyy-mm-dd
   end_date: string;   // ISO yyyy-mm-dd
   game: string;
+  color?: string;     // Hex color code for event background
 };
 
 export function useEvents(game: string, year: number) {
@@ -27,7 +28,7 @@ export function useEvents(game: string, year: number) {
         const supabase = getSupabaseBrowserClient();
         const { data, error } = await supabase
           .from("events")
-          .select("id, name, location, year, start_date, end_date, game")
+          .select("id, name, location, year, start_date, end_date, game, color")
           .eq("year", year)
           .eq("game", game)
           .order("start_date", { ascending: true });

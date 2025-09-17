@@ -119,7 +119,11 @@ export default function Schedule({
                 <div
                   key={event.id}
                   className="event-block"
-                  style={{ left: `${left}%`, width: `${width}%` }}
+                  style={{ 
+                    left: `${left}%`, 
+                    width: `${width}%`,
+                    backgroundColor: event.color || 'rgba(255, 255, 255, 0.9)'
+                  }}
                   title={title}
                 >
                   <div className="event-block__content">
