@@ -4,6 +4,9 @@
     height: 150px;
     padding-bottom: 12px;
     align-items: center;
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
 }
 
 .schedule__title {
@@ -14,10 +17,11 @@
 
 .year-bar {
     background-color: #476ebc;
-    width: 100%;
+    width: 1200px;
     height: 100%;
     position: relative;
     border-radius: 12px;
+    flex: 0 0 auto;
 }
 
 .today-marker {
