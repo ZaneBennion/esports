@@ -1,9 +1,11 @@
 "use client";
 
 import Image from "next/image";
+import { getGameSlug } from "@/lib/eventUtils";
 
 export default function GameLogo({ game }: { game: string }) {
-  const logoPath = `/images/logos/${game}.svg`;
+  const gameSlug = getGameSlug(game);
+  const logoPath = `/images/logos/${gameSlug}.svg`;
   
   return (
     <div className="game-logo-container">

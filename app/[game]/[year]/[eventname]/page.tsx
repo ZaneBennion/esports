@@ -5,7 +5,7 @@ import { useEvents } from "@/hooks/useEvents";
 import { EventRow } from "@/hooks/useEvents";
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { createEventSlug } from "@/lib/eventUtils";
+import { createEventSlug, getGameName } from "@/lib/eventUtils";
 import "./EventDetail.css";
 
 // Utility function to find event by slug
@@ -15,9 +15,12 @@ function findEventBySlug(events: EventRow[], eventSlug: string): EventRow | null
 
 export default function EventDetailPage() {
   const params = useParams();
-  const game = params.game as string;
+  const gameSlug = params.game as string;
   const year = parseInt(params.year as string);
   const eventSlug = params.eventname as string;
+  
+  // Convert game slug to actual game name for database queries
+  const game = getGameName(gameSlug);
   
   const { events, loading, error } = useEvents(game, year);
   const [event, setEvent] = useState<EventRow | null>(null);
