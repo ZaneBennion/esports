@@ -1,4 +1,5 @@
 import Schedule from "@/components/Schedule";
+import MonthIndicator from "@/components/MonthIndicator";
 import { ScrollProvider } from "@/contexts/ScrollContext";
 
 export default function Page() {
@@ -18,6 +19,7 @@ export default function Page() {
           Esport Network — {year}
         </h1>
         <div style={{ opacity: 0.8, marginBottom: 24 }}>Events by game</div>
+        <MonthIndicator year={year} />
         <div>
           {games.map((g) => (
             <Schedule key={g} year={year} game={g} />
