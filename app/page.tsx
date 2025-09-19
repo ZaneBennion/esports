@@ -1,5 +1,4 @@
 import Schedule from "@/components/Schedule";
-import YearlySchedule from "@/components/YearlySchedule";
 import { ScrollProvider } from "@/contexts/ScrollContext";
 
 export default function Page() {
