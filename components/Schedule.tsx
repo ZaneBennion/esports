@@ -1,9 +1,11 @@
 "use client";
 
 import { useRef, useEffect, useId } from "react";
+import { useRouter } from "next/navigation";
 import GameLogo from "./GameLogo";
 import { useEvents } from "@/hooks/useEvents";
 import { useScrollContext } from "@/contexts/ScrollContext";
+import { getEventDetailUrl } from "@/lib/eventUtils";
 import "./Schedule.css";
 
 type ScheduleProps = {
@@ -45,6 +47,7 @@ export default function Schedule({
 }: ScheduleProps) {
   const scrollerRef = useRef<HTMLDivElement>(null);
   const componentId = useId();
+  const router = useRouter();
   const targetYear = year ?? new Date().getUTCFullYear();
   const totalDays = daysInYear(targetYear);
   const today = new Date();
@@ -58,6 +61,14 @@ export default function Schedule({
   
   // Get scroll context for synchronized scrolling
   const { registerScroller, unregisterScroller, scrollToPosition, scrollToToday } = useScrollContext();
+
+  // Handle event click navigation
+  const handleEventClick = (event: any) => {
+    if (game) {
+      const eventUrl = getEventDetailUrl(game, targetYear, event.name);
+      router.push(eventUrl);
+    }
+  };
 
   // Register this scroller with the context
   useEffect(() => {
@@ -122,9 +133,11 @@ export default function Schedule({
                   style={{ 
                     left: `${left}%`, 
                     width: `${width}%`,
-                    backgroundColor: event.color || 'rgba(255, 255, 255, 0.9)'
+                    backgroundColor: event.color || 'rgba(255, 255, 255, 0.9)',
+                    cursor: 'pointer'
                   }}
                   title={title}
+                  onClick={() => handleEventClick(event)}
                 >
                   <div className="event-block__content">
                     <div className="event-block__name">{event.name}</div>

@@ -1,0 +1,70 @@
+.event-detail-container {
+  padding: 24px;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.event-detail-back-link {
+  color: #0070f3;
+  text-decoration: underline;
+  margin-bottom: 24px;
+  display: inline-block;
+}
+
+.event-detail-header {
+  margin-bottom: 32px;
+}
+
+.event-detail-title {
+  font-size: 32px;
+  font-weight: 800;
+  margin-bottom: 8px;
+}
+
+.event-detail-subtitle {
+  font-size: 18px;
+  color: #666;
+  margin-bottom: 16px;
+}
+
+.event-detail-location {
+  font-size: 16px;
+  color: #888;
+  margin-bottom: 24px;
+}
+
+.event-detail-card {
+  background-color: #f8f9fa;
+  padding: 24px;
+  border-radius: 8px;
+  border: 2px solid #e0e0e0;
+}
+
+.event-detail-card-title {
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 16px;
+}
+
+.event-detail-info-item {
+  margin-bottom: 16px;
+}
+
+.event-detail-info-label {
+  font-weight: 600;
+}
+
+.event-detail-loading {
+  padding: 24px;
+  text-align: center;
+}
+
+.event-detail-error {
+  padding: 24px;
+  text-align: center;
+}
+
+.event-detail-not-found {
+  padding: 24px;
+  text-align: center;
+}
