@@ -22,7 +22,6 @@ function daysInYear(year: number): number {
 export default function MonthIndicator({ year }: MonthIndicatorProps) {
   const indicatorRef = useRef<HTMLDivElement>(null);
   const targetYear = year ?? new Date().getUTCFullYear();
-  const totalDays = daysInYear(targetYear);
   
   // Get scroll context for synchronized scrolling
   const { registerScroller, unregisterScroller, scrollToPosition } = useScrollContext();
@@ -57,8 +56,8 @@ export default function MonthIndicator({ year }: MonthIndicatorProps) {
 
   return (
     <div className="month-indicator">
-      <div className="month-indicator__scroller" ref={indicatorRef}>
-        <div className="month-indicator__bar">
+      <div className="month-indicator-scroller" ref={indicatorRef}>
+        <div className="month-indicator-bar">
           {MONTHS.map((month, index) => {
             // Calculate the position for each month
             const monthStart = (index / 12) * 100;
@@ -67,7 +66,7 @@ export default function MonthIndicator({ year }: MonthIndicatorProps) {
             return (
               <div
                 key={month}
-                className="month-indicator__month"
+                className="month-indicator-month"
                 style={{
                   left: `${monthStart}%`,
                   width: `${monthWidth}%`,

@@ -111,10 +111,10 @@ export default function Schedule({
 
   return (
     <div className="schedule">
-        <div className="schedule__title">
+        <div className="schedule-title">
           {game ? <GameLogo game={game} /> : null}
         </div>
-        <div className="schedule__scroller" ref={scrollerRef}>
+        <div className="schedule-scroller" ref={scrollerRef}>
           <div className="year-bar">
             {/* Event blocks */}
             {events.map((event) => {
@@ -122,7 +122,7 @@ export default function Schedule({
               const end = clamp(start, getDayOfYear(event.end_date), totalDays);
               const left = (start / totalDays) * 100;
               const width = ((end - start + 1) / totalDays) * 100;
-              const title = `${event.name} — ${event.location}`;
+              const title = `${event.name} — ${event.start_date} ${event.end_date}`;
               const startDate = new Date(event.start_date).toLocaleDateString();
               const endDate = new Date(event.end_date).toLocaleDateString();
               
@@ -134,15 +134,14 @@ export default function Schedule({
                     left: `${left}%`, 
                     width: `${width}%`,
                     backgroundColor: event.color || 'rgba(255, 255, 255, 0.9)',
-                    cursor: 'pointer'
                   }}
                   title={title}
                   onClick={() => handleEventClick(event)}
                 >
-                  <div className="event-block__content">
-                    <div className="event-block__name">{event.name}</div>
-                    <div className="event-block__location">{event.location}</div>
-                    <div className="event-block__dates">
+                  <div className="event-block-content">
+                    <div className="event-block-name">{event.name}</div>
+                    <div className="event-block-location">{event.location}</div>
+                    <div className="event-block-dates">
                       {startDate === endDate ? startDate : `${startDate} - ${endDate}`}
                     </div>
                   </div>
@@ -164,5 +163,3 @@ export default function Schedule({
       </div>
   );
 }
-
-

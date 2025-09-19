@@ -4,10 +4,11 @@
     height: 125px;
     align-items: center;
     background-color: #3E9C6E;
+    border: 3px solid #3E9C6E;
     border-radius: 12px;
 }
 
-.schedule__title {
+.schedule-title {
   font-weight: 700;
   letter-spacing: 0.5px;
   width: 44px;
@@ -15,11 +16,8 @@
   flex: 0 0 auto;
 }
 
-.schedule__scroller {
-    flex: 1 1 auto;
-    min-width: 0;
+.schedule-scroller {
     height: 100%;
-    border: 3px solid #3E9C6E;
     
     overflow-x: auto;
     overflow-y: hidden;
@@ -30,7 +28,7 @@
     -ms-overflow-style: none; /* Internet Explorer 10+ */
 }
 
-.schedule__scroller::-webkit-scrollbar {
+.schedule-scroller::-webkit-scrollbar {
     display: none; /* WebKit browsers (Chrome, Safari, Edge) */
 }
 
@@ -40,7 +38,6 @@
     height: 100%;
     position: relative;
     border-radius: 12px;
-    flex: 0 0 auto;
 }
 
 /* Month divider lines */
@@ -73,7 +70,6 @@
   position: absolute;
   top: 8px;
   bottom: 8px;
-  background: rgba(255, 255, 255, 0.9);
   border: 1px solid rgba(0, 0, 0, 0.1);
   border-radius: 12px;
   padding: 4px 6px;
@@ -87,20 +83,19 @@
 
 .event-block:hover {
   /* Keep the custom background color but make it slightly more opaque */
-  filter: brightness(1.1) saturate(1.1);
+  filter: brightness(1.1);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
   transform: translateY(-1px);
 }
 
-.event-block__content {
+.event-block-content {
   display: flex;
   flex-direction: column;
   height: 100%;
   justify-content: center;
-  min-width: 0;
 }
 
-.event-block__name {
+.event-block-name {
   font-weight: 600;
   font-size: 12px;
   color: #1f2937;
@@ -112,7 +107,7 @@
   text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
 }
 
-.event-block__location {
+.event-block-location {
   font-size: 10px;
   color: #6b7280;
   white-space: nowrap;
@@ -123,7 +118,7 @@
   text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
 }
 
-.event-block__dates {
+.event-block-dates {
   font-size: 9px;
   color: #9ca3af;
   white-space: nowrap;

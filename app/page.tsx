@@ -18,7 +18,6 @@ export default function Page() {
         <h1 style={{ fontSize: 28, fontWeight: 800, marginBottom: 12 }}>
           Esport Network — {year}
         </h1>
-        <div style={{ opacity: 0.8, marginBottom: 24 }}>Events by game</div>
         <MonthIndicator year={year} />
         <div>
           {games.map((g) => (

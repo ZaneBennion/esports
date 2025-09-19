@@ -7,35 +7,30 @@
   position: relative;
 }
 
-.month-indicator__scroller {
-  flex: 1 1 auto;
-  min-width: 0;
+.month-indicator-scroller {
   height: 100%;
   
   overflow-x: auto;
   overflow-y: hidden;
   -webkit-overflow-scrolling: touch;
-  border-radius: 12px;
   /* Hide scrollbar but keep scrolling functionality */
   scrollbar-width: none; /* Firefox */
   -ms-overflow-style: none; /* Internet Explorer 10+ */
 }
 
-.month-indicator__scroller::-webkit-scrollbar {
+.month-indicator-scroller::-webkit-scrollbar {
   display: none; /* WebKit browsers (Chrome, Safari, Edge) */
 }
 
-.month-indicator__bar {
+.month-indicator-bar {
   width: 1500px;
   height: 100%;
   position: relative;
-  border-radius: 12px;
-  flex: 0 0 auto;
   display: flex;
   align-items: center;
 }
 
-.month-indicator__month {
+.month-indicator-month {
   position: absolute;
   top: 0;
   bottom: 0;
@@ -45,12 +40,7 @@
   font-weight: 600;
   font-size: 14px;
   color: var(--foreground);
-  border-right: 1px solid rgba(0, 0, 0, 0.1);
   pointer-events: none;
-}
-
-.month-indicator__month:last-child {
-  border-right: none;
 }
 
 /* Left fade overlay */
