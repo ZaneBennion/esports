@@ -1,25 +1,36 @@
-import { pgTable, serial, text, timestamp, boolean, integer } from 'drizzle-orm/pg-core'
+import { pgTable, serial, text, integer } from 'drizzle-orm/pg-core'
 
-export const users = pgTable('users', {
-  id: serial('id').primaryKey(),
-  email: text('email').notNull().unique(),
-  name: text('name').notNull(),
-  avatar: text('avatar'),
-  createdAt: timestamp('created_at').defaultNow().notNull(),
-  updatedAt: timestamp('updated_at').defaultNow().notNull(),
+export const game = pgTable('game', {
+  id: serial().primaryKey(),
+  name: text().notNull(),
 })
 
-export const posts = pgTable('posts', {
-  id: serial('id').primaryKey(),
-  title: text('title').notNull(),
-  content: text('content').notNull(),
-  published: boolean('published').default(false).notNull(),
-  authorId: integer('author_id').references(() => users.id).notNull(),
-  createdAt: timestamp('created_at').defaultNow().notNull(),
-  updatedAt: timestamp('updated_at').defaultNow().notNull(),
+export const event = pgTable('event', {
+  id: serial().primaryKey(),
+  name: text().notNull(),
+  gameId: integer('game_id').references(() => game.id).notNull(),
 })
 
-export type User = typeof users.$inferSelect
-export type NewUser = typeof users.$inferInsert
-export type Post = typeof posts.$inferSelect
-export type NewPost = typeof posts.$inferInsert
+export const bracket = pgTable('bracket', {
+  id: serial().primaryKey(),
+  name: text().notNull(),
+  eventId: integer('event_id').references(() => event.id).notNull(),
+})
+
+export const match = pgTable('match', {
+  id: serial().primaryKey(),
+  bracketId: integer('bracket_id').references(() => bracket.id).notNull(),
+  teamAId: integer('team_a_id').references(() => org.id).notNull(),
+  teamBId: integer('team_b_id').references(() => org.id).notNull(),
+})
+
+export const org = pgTable('org', {
+  id: serial().primaryKey(),
+  name: text().notNull(),
+})
+
+export const player = pgTable('player', {
+  id: serial().primaryKey(),
+  name: text().notNull(),
+  orgId: integer('org_id').references(() => org.id),
+})
