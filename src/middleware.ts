@@ -37,8 +37,16 @@ export async function middleware(request: NextRequest) {
   // Protected routes that require authentication
   const protectedRoutes = ['/account']
   
+  // Admin routes that require admin privileges
+  const adminRoutes = ['/admin']
+  
   // Check if the current path is a protected route
   const isProtectedRoute = protectedRoutes.some(route => 
+    request.nextUrl.pathname.startsWith(route)
+  )
+  
+  // Check if the current path is an admin route
+  const isAdminRoute = adminRoutes.some(route => 
     request.nextUrl.pathname.startsWith(route)
   )
 
@@ -48,6 +56,16 @@ export async function middleware(request: NextRequest) {
     signInUrl.searchParams.set('redirectTo', request.nextUrl.pathname)
     return NextResponse.redirect(signInUrl)
   }
+
+  // If it's an admin route and user is not authenticated, redirect to signin
+  if (isAdminRoute && !session) {
+    const signInUrl = new URL('/auth/signin', request.url)
+    signInUrl.searchParams.set('redirectTo', request.nextUrl.pathname)
+    return NextResponse.redirect(signInUrl)
+  }
+
+  // For admin routes, we'll let the page component handle admin privilege checking
+  // since we need to query the database to check isAdmin status
 
   return response
 }

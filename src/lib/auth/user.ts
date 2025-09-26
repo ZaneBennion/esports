@@ -41,3 +41,17 @@ export async function requireAuth() {
   
   return user
 }
+
+export async function requireAdmin() {
+  const user = await getCurrentUser()
+  
+  if (!user) {
+    redirect('/auth/signin')
+  }
+  
+  if (!user.isAdmin) {
+    redirect('/account')
+  }
+  
+  return user
+}
