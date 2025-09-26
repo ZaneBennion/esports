@@ -1,4 +1,4 @@
-import { pgTable, serial, text, integer } from 'drizzle-orm/pg-core'
+import { pgTable, serial, text, integer, boolean } from 'drizzle-orm/pg-core'
 
 export const game = pgTable('game', {
   id: serial().primaryKey(),
@@ -33,4 +33,12 @@ export const player = pgTable('player', {
   id: serial().primaryKey(),
   name: text().notNull(),
   orgId: integer('org_id').references(() => org.id),
+})
+
+export const user = pgTable('user', {
+  id: serial().primaryKey(),
+  name: text().notNull(),
+  email: text().notNull(),
+  password: text().notNull(),
+  isAdmin: boolean('is_admin').notNull().default(false),
 })
