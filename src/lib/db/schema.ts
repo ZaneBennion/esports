@@ -3,7 +3,7 @@ import { pgTable, serial, text, integer, boolean, date } from 'drizzle-orm/pg-co
 export const game = pgTable('game', {
   id: serial().primaryKey(),
   name: text().notNull(),
-  logo: text().notNull(),
+  slug: text().notNull(),
 })
 
 export const event = pgTable('event', {
@@ -30,7 +30,7 @@ export const match = pgTable('match', {
 export const org = pgTable('org', {
   id: serial().primaryKey(),
   name: text().notNull(),
-  logo: text().notNull(),
+  slug: text().notNull(),
 })
 
 export const player = pgTable('player', {
