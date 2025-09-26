@@ -36,9 +36,7 @@ export const player = pgTable('player', {
 })
 
 export const user = pgTable('user', {
-  id: serial().primaryKey(),
+  id: text().primaryKey(), // This will be the Supabase auth user ID
   name: text().notNull(),
-  email: text().notNull(),
-  password: text().notNull(),
   isAdmin: boolean('is_admin').notNull().default(false),
 })
