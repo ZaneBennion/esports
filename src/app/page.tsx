@@ -1,5 +1,6 @@
 import { db } from '@/lib/db'
 import { game, event, bracket, match, org, player } from '@/lib/db/schema'
+import Link from 'next/link'
 
 export default async function Home() {
   // Fetch data from all tables
@@ -12,8 +13,12 @@ export default async function Home() {
 
   return (
     <div className="min-h-screen p-8">
+    <div className="flex justify-between">
       <h1 className="text-3xl font-bold mb-8">Esports Database</h1>
-      
+      <Link href="/auth/signup" className="text-blue-500">Signup</Link>
+      <Link href="/auth/signin" className="text-blue-500">Signin</Link>
+    </div>
+
       <div className="grid gap-8">
         {/* Games */}
         <div className="border rounded-lg p-4">
