@@ -2,8 +2,11 @@
 
 import { useState } from 'react'
 import { signinUser } from '@/lib/auth/signin'
+import { useSearchParams } from 'next/navigation'
 
 export default function SigninPage() {
+  const searchParams = useSearchParams()
+  const redirectTo = searchParams.get('redirectTo')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [isLoading, setIsLoading] = useState(false)
@@ -18,6 +21,9 @@ export default function SigninPage() {
       const formData = new FormData()
       formData.append('email', email)
       formData.append('password', password)
+      if (redirectTo) {
+        formData.append('redirectTo', redirectTo)
+      }
       
       await signinUser(formData)
     } catch (err) {

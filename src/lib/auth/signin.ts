@@ -6,6 +6,7 @@ import { redirect } from 'next/navigation'
 export async function signinUser(formData: FormData) {
   const email = formData.get('email') as string
   const password = formData.get('password') as string
+  const redirectTo = formData.get('redirectTo') as string
 
   if (!email || !password) {
     throw new Error('Email and password are required')
@@ -28,8 +29,8 @@ export async function signinUser(formData: FormData) {
       throw new Error('Failed to sign in')
     }
 
-    // Redirect to dashboard or home page
-    redirect('/')
+    // Redirect to the intended page or account page
+    redirect(redirectTo || '/account')
   } catch (error) {
     console.error('Signin error:', error)
     throw error
