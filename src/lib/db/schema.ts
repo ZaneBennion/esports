@@ -1,14 +1,17 @@
-import { pgTable, serial, text, integer, boolean } from 'drizzle-orm/pg-core'
+import { pgTable, serial, text, integer, boolean, date } from 'drizzle-orm/pg-core'
 
 export const game = pgTable('game', {
   id: serial().primaryKey(),
   name: text().notNull(),
+  logo: text().notNull(),
 })
 
 export const event = pgTable('event', {
   id: serial().primaryKey(),
   name: text().notNull(),
   gameId: integer('game_id').references(() => game.id).notNull(),
+  startDate: date('start_date').notNull(),
+  endDate: date('end_date').notNull(),
 })
 
 export const bracket = pgTable('bracket', {
@@ -27,6 +30,7 @@ export const match = pgTable('match', {
 export const org = pgTable('org', {
   id: serial().primaryKey(),
   name: text().notNull(),
+  logo: text().notNull(),
 })
 
 export const player = pgTable('player', {
