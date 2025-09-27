@@ -23,10 +23,13 @@ export async function getCurrentUser() {
     return null
   }
   
+  // Get admin status from JWT metadata (faster than database query)
+  const isAdmin = session.user.app_metadata?.isAdmin === true
+  
   return {
     id: userData[0].id,
     name: userData[0].name,
-    isAdmin: userData[0].isAdmin,
+    isAdmin,
     email: session.user.email,
     createdAt: session.user.created_at,
   }

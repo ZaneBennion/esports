@@ -64,8 +64,15 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(signInUrl)
   }
 
-  // For admin routes, we'll let the page component handle admin privilege checking
-  // since we need to query the database to check isAdmin status
+  // If it's an admin route, check admin privileges from JWT
+  if (isAdminRoute && session) {
+    const isAdmin = session.user.app_metadata?.isAdmin === true
+    
+    if (!isAdmin) {
+      // Redirect non-admin users to account page
+      return NextResponse.redirect(new URL('/account', request.url))
+    }
+  }
 
   return response
 }

@@ -1,10 +1,14 @@
-import { requireAdmin } from '@/lib/auth/user'
+import { getCurrentUser } from '@/lib/auth/user'
 import Link from 'next/link'
 
 export default async function AdminPage() {
-  // This will redirect to signin if user is not authenticated
-  // or to account page if user is not an admin
-  const user = await requireAdmin()
+  // Middleware handles admin checking, so we just need to get the current user
+  const user = await getCurrentUser()
+  
+  if (!user) {
+    // This shouldn't happen due to middleware, but just in case
+    return <div>Loading...</div>
+  }
 
   return (
     <div className="max-w-4xl mx-auto mt-8 p-6 bg-white rounded-lg shadow-md text-black">
