@@ -1,36 +1,34 @@
 'use client'
 
 import { useState } from 'react'
-import { signinUser } from '@/lib/auth/signin'
-import { useSearchParams } from 'next/navigation'
 
 export default function SigninPage() {
-  const searchParams = useSearchParams()
-  const redirectTo = searchParams.get('redirectTo')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState('')
 
-  const handleSignin = async (e: React.FormEvent) => {
+  const handleSignin = (e: React.FormEvent) => {
     e.preventDefault()
     setIsLoading(true)
     setError('')
 
-    try {
-      const formData = new FormData()
-      formData.append('email', email)
-      formData.append('password', password)
-      if (redirectTo) {
-        formData.append('redirectTo', redirectTo)
-      }
-      
-      await signinUser(formData)
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'An error occurred during signin')
-    } finally {
+    // Basic form validation
+    if (!email || !password) {
+      setError('Please fill in all fields')
       setIsLoading(false)
+      return
     }
+
+    // TODO: Implement signin logic here
+    console.log('Signin attempt:', { email, password })
+    
+    // Simulate loading state
+    setTimeout(() => {
+      setIsLoading(false)
+      // For now, just show a placeholder message
+      setError('Signin functionality not implemented yet')
+    }, 1000)
   }
 
   return (

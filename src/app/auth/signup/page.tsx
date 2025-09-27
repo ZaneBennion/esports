@@ -1,7 +1,6 @@
 'use client'
 
 import { useState } from 'react'
-import { signupUser } from '@/lib/auth/signup'
 
 export default function SignupPage() {
   const [email, setEmail] = useState('')
@@ -10,23 +9,27 @@ export default function SignupPage() {
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState('')
 
-  const handleSignup = async (e: React.FormEvent) => {
+  const handleSignup = (e: React.FormEvent) => {
     e.preventDefault()
     setIsLoading(true)
     setError('')
 
-    try {
-      const formData = new FormData()
-      formData.append('email', email)
-      formData.append('password', password)
-      formData.append('name', name)
-      
-      await signupUser(formData)
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'An error occurred during signup')
-    } finally {
+    // Basic form validation
+    if (!name || !email || !password) {
+      setError('Please fill in all fields')
       setIsLoading(false)
+      return
     }
+
+    // TODO: Implement signup logic here
+    console.log('Signup attempt:', { name, email, password })
+    
+    // Simulate loading state
+    setTimeout(() => {
+      setIsLoading(false)
+      // For now, just show a placeholder message
+      setError('Signup functionality not implemented yet')
+    }, 1000)
   }
 
   return (
