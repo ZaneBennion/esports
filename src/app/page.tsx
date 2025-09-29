@@ -1,7 +1,7 @@
 import { db } from '@/lib/db'
 import { game, event, bracket, match, org, player } from '@/lib/db/schema'
-import { getGameLogoPath, getFallbackLogoPath } from '@/lib/logos'
-import Link from 'next/link'
+import { getGameLogoPath } from '@/lib/logos'
+import { AuthHeader } from '@/components/auth-header'
 
 export default async function Home() {
   // Fetch data from all tables
@@ -16,8 +16,7 @@ export default async function Home() {
     <div className="min-h-screen p-8">
       <div className="flex justify-between items-center mb-8">
         <h1 className="text-3xl font-bold">Esports Database</h1>
-        <Link href="/auth/signin">Sign In</Link>
-        <Link href="/auth/signup">Sign Up</Link>
+        <AuthHeader />
       </div>
       
       {/* Games Section */}

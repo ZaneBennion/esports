@@ -72,26 +72,33 @@ export default async function AdminPage() {
 }
 ```
 
-### Middleware (Route Protection)
-```tsx
-// middleware.ts
-import { type NextRequest, NextResponse } from 'next/server'
-import { updateSession } from '@/lib/supabase/middleware'
-import { getUserRole, hasRole } from '@/lib/auth/rbac'
+### Middleware (Route Protection) - ✅ Already Configured!
 
-export async function middleware(request: NextRequest) {
-  const response = await updateSession(request)
-  
-  // Get session from cookies
-  const accessToken = request.cookies.get('sb-access-token')?.value
-  
-  if (request.nextUrl.pathname.startsWith('/admin')) {
-    if (!accessToken || !hasRole(accessToken, 'admin')) {
-      return NextResponse.redirect(new URL('/unauthorized', request.url))
-    }
+The middleware is already set up in `src/middleware.ts` and will:
+- Block unauthenticated users from `/dashboard` and `/profile` routes
+- Block non-admin users from `/admin` routes
+- Redirect to `/auth/login` with a `redirectTo` parameter
+- Show `/unauthorized` page for insufficient permissions
+
+**To add more protected routes**, edit `src/middleware.ts`:
+
+```tsx
+// Protected routes that require authentication
+const authRoutes = ['/dashboard', '/profile', '/settings']  // Add here
+
+// Admin-only routes
+const adminRoutes = ['/admin', '/manage']  // Add here
+```
+
+**For super_admin only routes**, add this to middleware:
+
+```tsx
+const superAdminRoutes = ['/admin/users']
+
+if (superAdminRoutes.some(route => path.startsWith(route))) {
+  if (!session || !hasRole(session.access_token, 'super_admin')) {
+    return NextResponse.redirect(new URL('/unauthorized', request.url))
   }
-  
-  return response
 }
 ```
 
