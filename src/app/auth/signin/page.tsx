@@ -1,5 +1,6 @@
 'use client'
 
+import { createClient } from '@/lib/supabase/client'
 import { useState } from 'react'
 
 export default function SigninPage() {
@@ -8,7 +9,7 @@ export default function SigninPage() {
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState('')
 
-  const handleSignin = (e: React.FormEvent) => {
+  const handleSignin = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsLoading(true)
     setError('')
@@ -20,15 +21,16 @@ export default function SigninPage() {
       return
     }
 
-    // TODO: Implement signin logic here
-    console.log('Signin attempt:', { email, password })
+    const supabase = createClient()
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email,
+      password
+    })
     
-    // Simulate loading state
-    setTimeout(() => {
-      setIsLoading(false)
-      // For now, just show a placeholder message
-      setError('Signin functionality not implemented yet')
-    }, 1000)
+    if (error) {
+      setError(error.message)
+    }
+    setIsLoading(false)
   }
 
   return (

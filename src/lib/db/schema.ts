@@ -38,9 +38,3 @@ export const player = pgTable('player', {
   name: text().notNull(),
   orgId: integer('org_id').references(() => org.id),
 })
-
-export const user = pgTable('user', {
-  id: text().primaryKey(), // This will be the Supabase auth user ID
-  name: text().notNull(),
-  isAdmin: boolean('is_admin').notNull().default(false),
-})

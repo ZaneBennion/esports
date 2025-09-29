@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { createClient } from '@/lib/supabase/client'
 
 export default function SignupPage() {
   const [email, setEmail] = useState('')
@@ -9,7 +10,7 @@ export default function SignupPage() {
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState('')
 
-  const handleSignup = (e: React.FormEvent) => {
+  const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsLoading(true)
     setError('')
@@ -21,15 +22,21 @@ export default function SignupPage() {
       return
     }
 
-    // TODO: Implement signup logic here
-    console.log('Signup attempt:', { name, email, password })
-    
-    // Simulate loading state
-    setTimeout(() => {
-      setIsLoading(false)
-      // For now, just show a placeholder message
-      setError('Signup functionality not implemented yet')
-    }, 1000)
+    const supabase = createClient()
+    const { data, error } = await supabase.auth.signUp({
+      email,
+      password,
+      options: {
+        data: {
+          role: 'user',
+          display_name: name,
+        }
+      }
+    })
+
+    if (error) {
+      setError(error.message)
+    }
   }
 
   return (
