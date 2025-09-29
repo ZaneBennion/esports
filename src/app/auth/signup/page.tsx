@@ -28,7 +28,6 @@ export default function SignupPage() {
       password,
       options: {
         data: {
-          role: 'user',
           display_name: name,
         }
       }

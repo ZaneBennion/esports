@@ -2,12 +2,14 @@
 
 import { createClient } from '@/lib/supabase/client'
 import { useState } from 'react'
+import { useRouter } from 'next/navigation'
 
 export default function SigninPage() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState('')
+  const router = useRouter()
 
   const handleSignin = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -29,8 +31,11 @@ export default function SigninPage() {
     
     if (error) {
       setError(error.message)
+      setIsLoading(false)
+    } else {
+      // Redirect to home page on successful sign in
+      router.push('/')
     }
-    setIsLoading(false)
   }
 
   return (

@@ -1,4 +1,13 @@
-import { pgTable, serial, text, integer, boolean, date } from 'drizzle-orm/pg-core'
+import { pgTable, serial, text, integer, boolean, date, uuid, pgEnum } from 'drizzle-orm/pg-core'
+
+// RBAC
+export const appRoleEnum = pgEnum('app_role', ['user', 'admin', 'super_admin'])
+
+export const userRoles = pgTable('user_roles', {
+  id: serial().primaryKey(),
+  userId: uuid('user_id').notNull().unique(),
+  role: appRoleEnum('role').notNull().default('user'),
+})
 
 export const game = pgTable('game', {
   id: serial().primaryKey(),
