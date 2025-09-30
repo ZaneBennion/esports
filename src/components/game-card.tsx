@@ -1,5 +1,5 @@
 import { getGameLogoPath } from '@/lib/logos'
-import { getLatestEventForGame } from '@/lib/actions/events'
+import { getLatestEventForGame, getEventRoute } from '@/lib/actions/events'
 import Link from 'next/link'
 
 interface GameCardProps {
@@ -12,6 +12,7 @@ interface GameCardProps {
 
 export async function GameCard({ game }: GameCardProps) {
   const latestEvent = await getLatestEventForGame(game.id)
+  const eventRoute = latestEvent ? await getEventRoute(latestEvent.id) : null
 
   return (
     <div className="bg-white rounded-lg flex flex-row">
@@ -24,13 +25,13 @@ export async function GameCard({ game }: GameCardProps) {
         <h3 className="text-lg font-medium text-gray-900">{game.name}</h3>
       </Link>
         
-        {latestEvent && (
-          <div className="p-2 text-sm text-gray-600">
+        {latestEvent && eventRoute && (
+          <Link href={eventRoute} className="p-2 text-sm text-gray-600">
             <p className="font-medium">{latestEvent.name}</p>
             <p className="text-xs text-gray-500">
               {latestEvent.startDate} - {latestEvent.endDate}
             </p>
-          </div>
+          </Link>
         )}
     </div>
   )
