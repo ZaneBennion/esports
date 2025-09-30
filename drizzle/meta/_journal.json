@@ -15,6 +15,27 @@
       "when": 1759187498129,
       "tag": "0001_smiling_virginia_dare",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1759260296353,
+      "tag": "0002_tan_jetstream",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1759260644978,
+      "tag": "0003_stale_sunset_bain",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1759261016857,
+      "tag": "0004_cheerful_beast",
+      "breakpoints": true
     }
   ]
 }

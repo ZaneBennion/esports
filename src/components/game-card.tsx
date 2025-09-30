@@ -13,24 +13,24 @@ export async function GameCard({ game }: GameCardProps) {
   const latestEvent = await getLatestEventForGame(game.id)
 
   return (
-    <div className="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow">
-      <div className="flex flex-col items-center text-center">
+    <div className="bg-white rounded-lg flex flex-row">
+      <div className="flex flex-col items-center justify-center text-center border-r-2 border-black p-2">
         <img 
           src={getGameLogoPath(game.slug)} 
           alt={`${game.name} logo`}
-          className="w-16 h-16 object-contain mb-4"
+          className="w-16 h-16 object-contain"
         />
         <h3 className="text-lg font-medium text-gray-900">{game.name}</h3>
+      </div>
         
         {latestEvent && (
-          <div className="mt-3 text-sm text-gray-600">
+          <div className="p-2 text-sm text-gray-600">
             <p className="font-medium">{latestEvent.name}</p>
             <p className="text-xs text-gray-500">
               {latestEvent.startDate} - {latestEvent.endDate}
             </p>
           </div>
         )}
-      </div>
     </div>
   )
 }

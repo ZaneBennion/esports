@@ -1,55 +1,49 @@
-import { pgTable, serial, text, integer, boolean, date, uuid, pgEnum } from 'drizzle-orm/pg-core'
+import { pgTable, text, integer, boolean, date, uuid } from 'drizzle-orm/pg-core'
 
-// RBAC
-export const appRoleEnum = pgEnum('app_role', ['user', 'admin', 'super_admin'])
-
-export const userRoles = pgTable('user_roles', {
-  id: serial().primaryKey(),
-  userId: uuid('user_id').notNull().unique(),
-  role: appRoleEnum('role').notNull().default('user'),
-})
+// Note: user_roles table and app_role enum are managed by Supabase migration (rbac_setup.sql)
+// They are not included in this schema to avoid conflicts
 
 export const game = pgTable('game', {
-  id: serial().primaryKey(),
+  id: integer().primaryKey().generatedAlwaysAsIdentity(),
   name: text().notNull(),
   slug: text().notNull(),
 })
 
 export const event = pgTable('event', {
-  id: serial().primaryKey(),
+  id: integer().primaryKey().generatedAlwaysAsIdentity(),
   name: text().notNull(),
   gameId: integer('game_id').references(() => game.id).notNull(),
+  slug: text().notNull(),
   startDate: date('start_date').notNull(),
   endDate: date('end_date').notNull(),
 })
 
 export const bracket = pgTable('bracket', {
-  id: serial().primaryKey(),
+  id: integer().primaryKey().generatedAlwaysAsIdentity(),
   name: text().notNull(),
   eventId: integer('event_id').references(() => event.id).notNull(),
 })
 
 export const match = pgTable('match', {
-  id: serial().primaryKey(),
+  id: integer().primaryKey().generatedAlwaysAsIdentity(),
   bracketId: integer('bracket_id').references(() => bracket.id).notNull(),
   teamAId: integer('team_a_id').references(() => org.id).notNull(),
   teamBId: integer('team_b_id').references(() => org.id).notNull(),
 })
 
 export const org = pgTable('org', {
-  id: serial().primaryKey(),
+  id: integer().primaryKey().generatedAlwaysAsIdentity(),
   name: text().notNull(),
   slug: text().notNull(),
 })
 
 export const player = pgTable('player', {
-  id: serial().primaryKey(),
+  id: integer().primaryKey().generatedAlwaysAsIdentity(),
   name: text().notNull(),
   orgId: integer('org_id').references(() => org.id),
 })
 
 // Type exports
-export type UserRole = typeof userRoles.$inferSelect
 export type Game = typeof game.$inferSelect
 export type Event = typeof event.$inferSelect
 export type Bracket = typeof bracket.$inferSelect
