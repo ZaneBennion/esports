@@ -8,18 +8,19 @@ import { useRouter } from 'next/navigation'
 
 export function AuthHeader() {
   const [user, setUser] = useState<{ email: string; role: AppRole } | null>(null)
-  const [isLoading, setIsLoading] = useState(true)
+  const [mounted, setMounted] = useState(false)
   const supabase = createClient()
   const router = useRouter()
 
   useEffect(() => {
+    setMounted(true)
+    
     // Get initial session
     supabase.auth.getSession().then(({ data: { session } }) => {
       if (session?.user) {
         const role = getUserRole(session.access_token)
         setUser({ email: session.user.email!, role })
       }
-      setIsLoading(false)
     })
 
     // Listen for auth changes
@@ -41,8 +42,9 @@ export function AuthHeader() {
     router.refresh()
   }
 
-  if (isLoading) {
-    return <div className="flex gap-4">Loading...</div>
+  // Prevent hydration mismatch by not rendering auth-dependent content until mounted
+  if (!mounted) {
+    return <div className="flex gap-4 w-[200px]"></div>
   }
 
   if (user) {

@@ -47,3 +47,12 @@ export const player = pgTable('player', {
   name: text().notNull(),
   orgId: integer('org_id').references(() => org.id),
 })
+
+// Type exports
+export type UserRole = typeof userRoles.$inferSelect
+export type Game = typeof game.$inferSelect
+export type Event = typeof event.$inferSelect
+export type Bracket = typeof bracket.$inferSelect
+export type Match = typeof match.$inferSelect
+export type Org = typeof org.$inferSelect
+export type Player = typeof player.$inferSelect
