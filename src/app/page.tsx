@@ -1,7 +1,7 @@
 import { db } from '@/lib/db'
 import { game, event, bracket, match, org, player } from '@/lib/db/schema'
-import { getGameLogoPath } from '@/lib/logos'
 import { AuthHeader } from '@/components/auth-header'
+import { GameCard } from '@/components/game-card'
 
 export default async function Home() {
   // Fetch data from all tables
@@ -24,16 +24,7 @@ export default async function Home() {
         <h2 className="text-2xl font-semibold mb-6">Games</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           {games.map((game) => (
-            <div key={game.id} className="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow">
-              <div className="flex flex-col items-center text-center">
-                <img 
-                  src={getGameLogoPath(game.slug)} 
-                  alt={`${game.name} logo`}
-                  className="w-16 h-16 object-contain mb-4"
-                />
-                <h3 className="text-lg font-medium text-gray-900">{game.name}</h3>
-              </div>
-            </div>
+            <GameCard key={game.id} game={game} />
           ))}
         </div>
         {games.length === 0 && (
