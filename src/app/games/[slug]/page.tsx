@@ -2,6 +2,7 @@ import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import { getGameBySlug, getEventsForGame } from '@/lib/actions/games'
 import { getGameLogoPath } from '@/lib/logos'
+import { getEventRoute } from '@/lib/actions/events'
 
 interface GamePageProps {
   params: {
@@ -17,6 +18,14 @@ export default async function GamePage({ params }: GamePageProps) {
   }
 
   const events = await getEventsForGame(game.id)
+  
+  // Get event routes for all events
+  const eventsWithRoutes = await Promise.all(
+    events.map(async (event) => ({
+      ...event,
+      route: await getEventRoute(event.id),
+    }))
+  )
 
   return (
     <div className="min-h-screen p-8">
@@ -45,14 +54,15 @@ export default async function GamePage({ params }: GamePageProps) {
         <div className="bg-white rounded-lg shadow-lg p-8">
           <h2 className="text-2xl font-semibold mb-6">Events</h2>
           
-          {events.length === 0 ? (
+          {eventsWithRoutes.length === 0 ? (
             <p className="text-gray-500 text-center py-8">No events found for this game.</p>
           ) : (
             <div className="space-y-4">
-              {events.map((event) => (
-                <div 
+              {eventsWithRoutes.map((event) => (
+                <Link
                   key={event.id}
-                  className="border border-gray-200 rounded-lg p-4 hover:border-blue-500 transition-colors"
+                  href={event.route || '#'}
+                  className="block border border-gray-200 rounded-lg p-4 hover:border-blue-500 transition-colors"
                 >
                   <h3 className="text-xl font-medium text-gray-900 mb-2">{event.name}</h3>
                   <div className="flex gap-4 text-sm text-gray-600">
@@ -61,7 +71,7 @@ export default async function GamePage({ params }: GamePageProps) {
                     <span>End: {event.endDate}</span>
                   </div>
                   <p className="text-xs text-gray-500 mt-2">Slug: {event.slug}</p>
-                </div>
+                </Link>
               ))}
             </div>
           )}

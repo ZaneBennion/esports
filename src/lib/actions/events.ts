@@ -1,7 +1,7 @@
 'use server'
 
 import { db } from '@/lib/db'
-import { event } from '@/lib/db/schema'
+import { event, game } from '@/lib/db/schema'
 import { eq, and, gte, lte, asc, desc } from 'drizzle-orm'
 
 /**
@@ -67,4 +67,56 @@ export async function getLatestEventForGame(gameId: number) {
 
   // No events found for this game
   return null
+}
+
+/**
+ * Get an event by game slug, year, and event slug
+ */
+export async function getEventBySlugAndYear(
+  gameSlug: string,
+  year: string,
+  eventSlug: string
+) {
+  const events = await db
+    .select({
+      event: event,
+      game: game,
+    })
+    .from(event)
+    .innerJoin(game, eq(event.gameId, game.id))
+    .where(eq(game.slug, gameSlug))
+
+  // Filter events by year from start date and event slug
+  const matchingEvent = events.find((e) => {
+    const eventYear = new Date(e.event.startDate).getFullYear().toString()
+    return eventYear === year && e.event.slug === eventSlug
+  })
+
+  return matchingEvent || null
+}
+
+/**
+ * Get the route string for a specific event
+ * Format: /[game-slug]/[year]/[event-slug]
+ */
+export async function getEventRoute(eventId: number) {
+  const eventData = await db
+    .select({
+      eventSlug: event.slug,
+      startDate: event.startDate,
+      gameSlug: game.slug,
+    })
+    .from(event)
+    .innerJoin(game, eq(event.gameId, game.id))
+    .where(eq(event.id, eventId))
+    .limit(1)
+
+  if (eventData.length === 0) {
+    return null
+  }
+
+  const { eventSlug, startDate, gameSlug } = eventData[0]
+  const year = new Date(startDate).getFullYear()
+
+  return `/${gameSlug}/${year}/${eventSlug}`
 }
