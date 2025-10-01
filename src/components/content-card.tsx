@@ -22,36 +22,37 @@ export async function ContentCard({ content }: ContentCardProps) {
   }
   
   return (
-    <div className="w-full max-w-[240px]">
-        <Link 
-          href={org ? `/orgs/${org.slug}` : '#'} 
-          className="text-md text-gray-600 mb-1 hover:text-blue-600 transition-colors block"
-        >
-          {video.channelName}
-        </Link>
-        <div className="border rounded overflow-hidden">
-        {/* YouTube Thumbnail */}
-        <Link href={`https://www.youtube.com/watch?v=${video.videoId}`} target="_blank" rel="noopener noreferrer">
-          <div className="relative w-full aspect-video bg-black group">
-            <img
-              src={`https://img.youtube.com/vi/${video.videoId}/maxresdefault.jpg`}
-              alt={video.title}
-              className="w-full h-full object-cover"
-            />
-            {/* Play button overlay */}
-            <div className="absolute inset-0 flex items-center justify-center bg-black/20 group-hover:bg-black/30 transition-colors">
-              <svg className="w-16 h-16 text-white opacity-90" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M8 5v14l11-7z"/>
-              </svg>
-            </div>
+    <div className="w-full">
+      {/* Organization Name */}
+      <Link 
+        href={org ? `/orgs/${org.slug}` : '#'} 
+        className="text-sm text-gray-700 mb-2 hover:text-gray-900 transition-colors block font-medium"
+      >
+        {video.channelName}
+      </Link>
+      
+      {/* Thumbnail */}
+      <Link href={`https://www.youtube.com/watch?v=${video.videoId}`} target="_blank" rel="noopener noreferrer">
+        <div className="relative w-full aspect-video bg-gray-300 group rounded overflow-hidden mb-2">
+          <img
+            src={`https://img.youtube.com/vi/${video.videoId}/maxresdefault.jpg`}
+            alt={video.title}
+            className="w-full h-full object-cover"
+          />
+          {/* Play button overlay */}
+          <div className="absolute inset-0 flex items-center justify-center bg-black/20 group-hover:bg-black/30 transition-colors">
+            <svg className="w-12 h-12 text-white opacity-90" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M8 5v14l11-7z"/>
+            </svg>
           </div>
-        </Link>
-        
-        {/* Video Info */}
-        <div className="p-2">
-            <h1 className="font-semibold text-sm mb-1 line-clamp-2">{video.title}</h1>
+          <div className="absolute inset-0 border border-gray-400 pointer-events-none rounded" />
         </div>
-        </div>
+      </Link>
+      
+      {/* Video Title */}
+      <div className="bg-gray-200 px-3 py-2 rounded">
+        <p className="text-sm text-gray-900 line-clamp-2">{video.title}</p>
+      </div>
     </div>
   )
 }

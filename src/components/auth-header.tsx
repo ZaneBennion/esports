@@ -49,13 +49,10 @@ export function AuthHeader() {
 
   if (user) {
     return (
-      <div className="flex items-center gap-4">
-        <span className="text-sm text-gray-600">
-          {user.email} ({user.role})
-        </span>
+      <div className="flex items-center gap-3">
         <button
           onClick={handleSignOut}
-          className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 transition-colors"
+          className="px-4 py-2 border-2 border-gray-900 rounded-full text-gray-900 font-medium hover:bg-gray-100 transition-colors"
         >
           Sign Out
         </button>
@@ -64,19 +61,11 @@ export function AuthHeader() {
   }
 
   return (
-    <div className="flex gap-4">
-      <Link 
-        href="/auth/signin"
-        className="px-4 py-2 text-gray-700 hover:text-gray-900 transition-colors"
-      >
-        Sign In
-      </Link>
-      <Link 
-        href="/auth/signup"
-        className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors"
-      >
-        Sign Up
-      </Link>
-    </div>
+    <Link 
+      href="/auth/signin"
+      className="px-4 py-2 border-2 border-gray-900 rounded-full text-gray-900 font-medium hover:bg-gray-100 transition-colors"
+    >
+      Account
+    </Link>
   )
 }
