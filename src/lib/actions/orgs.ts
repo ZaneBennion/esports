@@ -54,3 +54,14 @@ export async function getContentForOrg(orgId: number) {
   return contents
 }
 
+/**
+ * Get all orgs by region
+ */
+export async function getOrgsByRegion(region: string) {
+  const orgs = await db
+    .select()
+    .from(org)
+    .where(eq(org.region, region))
+
+  return orgs
+}
