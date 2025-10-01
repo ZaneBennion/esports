@@ -1,4 +1,6 @@
 import { getLatestVideo } from '@/lib/youtube'
+import { getOrgById } from '@/lib/actions/orgs'
+import Link from 'next/link'
 
 interface ContentCardProps {
   content: {
@@ -9,6 +11,7 @@ interface ContentCardProps {
 
 export async function ContentCard({ content }: ContentCardProps) {
   const video = await getLatestVideo(content.link)
+  const org = await getOrgById(content.orgId)
   
   if (!video) {
     return (
@@ -19,9 +22,14 @@ export async function ContentCard({ content }: ContentCardProps) {
   }
   
   return (
-    <div>
-        <p className="text-sm text-gray-600 mb-2">{video.channelName}</p>
-        <div className="border rounded-lg overflow-hidden">
+    <div className="w-full max-w-[240px]">
+        <Link 
+          href={org ? `/orgs/${org.slug}` : '#'} 
+          className="text-md text-gray-600 mb-1 hover:text-blue-600 transition-colors block"
+        >
+          {video.channelName}
+        </Link>
+        <div className="border rounded overflow-hidden">
         {/* Embedded YouTube Video */}
         <div className="relative w-full" style={{ paddingBottom: '56.25%' }}>
             <iframe
@@ -33,8 +41,8 @@ export async function ContentCard({ content }: ContentCardProps) {
         </div>
         
         {/* Video Info */}
-        <div className="p-1">
-            <h1 className="font-semibold text-lg mb-2 line-clamp-2">{video.title}</h1>
+        <div className="p-2">
+            <h1 className="font-semibold text-sm mb-1 line-clamp-2">{video.title}</h1>
         </div>
         </div>
     </div>

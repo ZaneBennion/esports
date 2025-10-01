@@ -18,7 +18,7 @@ export default async function Home() {
 
       {/* Contents Section */}
       <section className="mb-12">
-        <h2 className="text-2xl font-semibold mb-6">Contents</h2>
+        <h2 className="text-2xl font-semibold mb-6">Content</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           {contents.map((content) => (
             <ContentCard key={content.id} content={content} />
