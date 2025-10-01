@@ -5,13 +5,8 @@ import { GameCard } from '@/components/game-card'
 import { ContentCard } from '@/components/content-card'
 
 export default async function Home() {
-  // Fetch data from all tables
+  // Fetch data from tables
   const games = await db.select().from(game)
-  const events = await db.select().from(event)
-  const brackets = await db.select().from(bracket)
-  const matches = await db.select().from(match)
-  const orgs = await db.select().from(org)
-  const players = await db.select().from(player)
   const contents = await db.select().from(content)
   
   return (
