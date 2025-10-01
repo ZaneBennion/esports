@@ -31,7 +31,7 @@ export default async function Home() {
       <main className="flex-1 max-w-7xl mx-auto w-full p-4">
         {/* Organization Content Cards Section */}
         <section className="mb-8">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
             {contents.map((content) => (
               <ContentCard key={content.id} content={content} />
             ))}

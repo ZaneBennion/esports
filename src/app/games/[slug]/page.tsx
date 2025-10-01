@@ -5,13 +5,14 @@ import { getGameLogoPath } from '@/lib/logos'
 import { getEventRoute } from '@/lib/actions/events'
 
 interface GamePageProps {
-  params: {
+  params: Promise<{
     slug: string
-  }
+  }>
 }
 
 export default async function GamePage({ params }: GamePageProps) {
-  const game = await getGameBySlug(params.slug)
+  const { slug } = await params
+  const game = await getGameBySlug(slug)
 
   if (!game) {
     notFound()

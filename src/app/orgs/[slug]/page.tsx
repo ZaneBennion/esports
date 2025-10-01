@@ -4,9 +4,9 @@ import { getOrgBySlug, getPlayersForOrg, getContentForOrg, getOrgsByRegion } fro
 import { ContentCard } from '@/components/content-card'
 
 interface OrgPageProps {
-  params: {
+  params: Promise<{
     slug: string
-  }
+  }>
 }
 
 const REGIONS = ['amer', 'pac', 'emea', 'cn'] as const
@@ -18,10 +18,12 @@ const REGION_NAMES: Record<string, string> = {
 }
 
 export default async function OrgPage({ params }: OrgPageProps) {
+  const { slug } = await params
+  
   // Check if the slug is a region
-  if (REGIONS.includes(params.slug as any)) {
-    const orgs = await getOrgsByRegion(params.slug)
-    const regionName = REGION_NAMES[params.slug] || params.slug.toUpperCase()
+  if (REGIONS.includes(slug as any)) {
+    const orgs = await getOrgsByRegion(slug)
+    const regionName = REGION_NAMES[slug] || slug.toUpperCase()
 
     return (
       <div className="min-h-screen p-8">
@@ -74,7 +76,7 @@ export default async function OrgPage({ params }: OrgPageProps) {
   }
 
   // Otherwise, treat it as an org slug
-  const org = await getOrgBySlug(params.slug)
+  const org = await getOrgBySlug(slug)
 
   if (!org) {
     notFound()
