@@ -30,15 +30,22 @@ export async function ContentCard({ content }: ContentCardProps) {
           {video.channelName}
         </Link>
         <div className="border rounded overflow-hidden">
-        {/* Embedded YouTube Video */}
-        <div className="relative w-full" style={{ paddingBottom: '56.25%' }}>
-            <iframe
-            className="absolute top-0 left-0 w-full h-full"
-            src={`https://www.youtube.com/embed/${video.videoId}`}
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowFullScreen
+        {/* YouTube Thumbnail */}
+        <Link href={`https://www.youtube.com/watch?v=${video.videoId}`} target="_blank" rel="noopener noreferrer">
+          <div className="relative w-full aspect-video bg-black group">
+            <img
+              src={`https://img.youtube.com/vi/${video.videoId}/maxresdefault.jpg`}
+              alt={video.title}
+              className="w-full h-full object-cover"
             />
-        </div>
+            {/* Play button overlay */}
+            <div className="absolute inset-0 flex items-center justify-center bg-black/20 group-hover:bg-black/30 transition-colors">
+              <svg className="w-16 h-16 text-white opacity-90" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M8 5v14l11-7z"/>
+              </svg>
+            </div>
+          </div>
+        </Link>
         
         {/* Video Info */}
         <div className="p-2">
