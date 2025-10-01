@@ -35,6 +35,14 @@ export const org = pgTable('org', {
   id: integer().primaryKey().generatedAlwaysAsIdentity(),
   name: text().notNull(),
   slug: text().notNull(),
+  country: text().notNull(),
+  region: text().notNull(),
+})
+
+export const content = pgTable('content', {
+  id: integer().primaryKey().generatedAlwaysAsIdentity(),
+  link: text().notNull(),
+  orgId: integer('org_id').references(() => org.id).notNull(),
 })
 
 export const player = pgTable('player', {
@@ -50,3 +58,4 @@ export type Bracket = typeof bracket.$inferSelect
 export type Match = typeof match.$inferSelect
 export type Org = typeof org.$inferSelect
 export type Player = typeof player.$inferSelect
+export type Content = typeof content.$inferSelect
