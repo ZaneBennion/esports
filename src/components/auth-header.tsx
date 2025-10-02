@@ -52,7 +52,7 @@ export function AuthHeader() {
       <div className="flex items-center gap-3">
         <button
           onClick={handleSignOut}
-          className="px-4 py-2 border-2 border-gray-900 rounded-full text-gray-900 font-medium hover:bg-gray-100 transition-colors"
+          className="px-4 py-2 border-2 border-foreground rounded-full text-foreground font-medium hover:bg-gray-100 transition-colors"
         >
           Sign Out
         </button>
@@ -63,7 +63,7 @@ export function AuthHeader() {
   return (
     <Link 
       href="/auth/signin"
-      className="px-4 py-2 border-2 border-gray-900 rounded-full text-gray-900 font-medium hover:bg-gray-100 transition-colors"
+      className="px-4 py-2 border-2 border-foreground rounded-full text-foreground font-medium hover:bg-gray-100 transition-colors"
     >
       Account
     </Link>

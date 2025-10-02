@@ -1,0 +1,96 @@
+.emptyState {
+  border: 1px solid #e5e7eb;
+  border-radius: 0.5rem;
+  padding: 1rem;
+  background-color: #f9fafb;
+}
+
+.emptyStateText {
+  color: #6b7280;
+}
+
+.container {
+  width: 100%;
+  color: var(--foreground);
+  background-color: var(--background);
+}
+
+.orgLink {
+  font-size: 0.875rem;
+  padding: 0.25rem 0.25rem 0 0.25rem;
+  width: min-content;
+  display: block;
+  font-weight: 500;
+  transition: color 0.2s;
+  border-top-right-radius: 0.5rem;
+  border-top-left-radius: 0.5rem;
+  box-shadow: 2px 1px 2px rgba(0,0,0,0),inset 3px 2px 5px var(--highlight);
+  transition: all .5s;
+}
+
+.container:hover .orgLink {
+  box-shadow: -2px -1px 2px var(--shadow),inset -3px -2px 3px rgba(0,0,0,0);
+}
+
+.orgLink:hover {
+  color: blue;
+}
+
+.thumbnailWrapper {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.thumbnailImage {
+  width: 95%;
+  height: 95%;
+  object-fit: cover;
+}
+
+.playButtonOverlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.playIcon {
+  width: 3rem;
+  height: 3rem;
+  color: white;
+  opacity: 0.9;
+}
+
+.thumbnailBorder {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  border-radius: 0.25rem;
+}
+
+.titleContainer {
+  padding: 0rem 0.25rem 0.25rem 0.25rem;
+  border-bottom-right-radius: 0.5rem;
+  border-bottom-left-radius: 0.5rem;
+  box-shadow: 2px 1px 1px var(--shadow),inset 3px 2px 5px rgba(0,0,0,0);
+  transition: all .5s;
+}
+
+.container:hover .titleContainer {
+  box-shadow: -2px -1px 2px rgba(0,0,0,0),inset -3px -2px 3px var(--highlight);
+}
+
+.titleText {
+  font-size: 0.875rem;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
