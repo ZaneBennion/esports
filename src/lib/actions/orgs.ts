@@ -3,6 +3,7 @@
 import { db } from '@/lib/db'
 import { org, player, content } from '@/lib/db/schema'
 import { eq } from 'drizzle-orm'
+import { createAdminClient } from '../supabase/admin'
 
 /**
  * Get an org by its ID
@@ -64,4 +65,37 @@ export async function getOrgsByRegion(region: string) {
     .where(eq(org.region, region))
 
   return orgs
+}
+
+export async function createOrg(formData: FormData) {
+  const orgName = formData.get('name') as string
+  const slug = orgName.toLowerCase().replace(/\s+/g, '')
+  const logoFile = formData.get('logo') as File
+  const country = formData.get('country') as string
+  const region = formData.get('region') as string
+
+  // Upload logo to Supabase Storage
+  if (logoFile && logoFile.size > 0) {
+    const supabase = createAdminClient()
+    const arrayBuffer = await logoFile.arrayBuffer()
+    const buffer = Buffer.from(arrayBuffer)
+
+    const { error } = await supabase.storage
+      .from('Images')
+      .upload(`orgs/${slug}.svg`, buffer, {
+        contentType: 'image/svg+xml',
+        upsert: true, // Overwrite if exists
+      })
+
+    if (error) {
+      throw new Error(`Failed to upload logo: ${error.message}`)
+    }
+  }
+
+  await db.insert(org).values({
+    name: orgName,
+    slug,
+    country,
+    region,
+  })
 }
