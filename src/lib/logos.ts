@@ -33,12 +33,3 @@ export function getGameLogoPath(gameSlug: string): string {
 export function getOrgLogoPath(orgSlug: string): string {
   return getLogoPath(orgSlug, 'orgs')
 }
-
-/**
- * Fallback logo path for when a logo doesn't exist
- * @param type - The type of logo (games or orgs)
- * @returns The path to the fallback SVG file
- */
-export function getFallbackLogoPath(type: LogoType): string {
-  return `/logos/${type}/placeholder.svg`
-}
