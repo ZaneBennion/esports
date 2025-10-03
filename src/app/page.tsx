@@ -1,9 +1,7 @@
 import { db } from '@/lib/db'
 import { game, event, bracket, match, org, player, content } from '@/lib/db/schema'
-import { AuthHeader } from '@/components/auth-header'
 import { GameCard } from '@/components/game-card'
 import { ContentCard } from '@/components/content-card'
-import { ThemeToggle } from '@/components/theme-toggle'
 import Link from 'next/link'
 import styles from './page.module.css'
 
@@ -14,21 +12,6 @@ export default async function Home() {
   
   return (
     <div className={styles.container}>
-      {/* Header */}
-      <header className={styles.header}>
-        <div className={styles.headerContent}>
-          <Link href="/" className={styles.logo}>
-            Home/Logo
-          </Link>
-          <div className={styles.headerActions}>
-            <ThemeToggle />
-            <AuthHeader />
-          </div>
-        </div>
-      </header>
-
-      <hr className={styles.divider} />
-
       {/* Main Content */}
       <main className={styles.main}>
         {/* Organization Content Cards Section */}
