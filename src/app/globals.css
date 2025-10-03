@@ -17,10 +17,10 @@
 }
 
 :root[data-theme='dark'] {
-  --background: #0e1111;
+  --background: #353839;
   --foreground: #f1f1f1;
-  --highlight: #242929;
-  --shadow: #020202;
+  --highlight: #4e5152;
+  --shadow: #252728;
 }
 
 body {

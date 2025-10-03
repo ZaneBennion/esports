@@ -1,6 +1,7 @@
 import { getGameLogoPath } from '@/lib/logos'
 import { getLatestEventForGame, getEventRoute } from '@/lib/actions/events'
 import Link from 'next/link'
+import styles from './game-card.module.css'
 
 interface GameCardProps {
   game: {
@@ -15,31 +16,31 @@ export async function GameCard({ game }: GameCardProps) {
   const eventRoute = latestEvent ? await getEventRoute(latestEvent.id) : null
 
   return (
-    <div className="bg-gray-200 rounded-lg flex flex-row overflow-hidden border border-gray-300">
+    <div className={styles.card}>
       {/* Game Section */}
       <Link 
         href={`/games/${game.slug}`} 
-        className="flex flex-col items-center justify-center bg-gray-300 border-r-2 border-gray-900 p-4 min-w-[120px]"
+        className={styles.gameSection}
       >
         <img 
           src={getGameLogoPath(game.slug)} 
           alt={`${game.name} logo`}
-          className="w-16 h-16 object-contain mb-2"
+          className={styles.gameLogo}
         />
-        <p className="text-sm text-gray-900">{game.name}</p>
+        <p className={styles.gameName}>{game.name}</p>
       </Link>
       
       {/* Event Details Section */}
-      <div className="flex-1 p-4 flex items-center">
+      <div className={styles.eventSection}>
         {latestEvent && eventRoute ? (
-          <Link href={eventRoute} className="text-gray-900">
-            <p className="font-medium mb-1">{latestEvent.name}</p>
-            <p className="text-sm text-gray-600">
+          <Link href={eventRoute} className={styles.eventLink}>
+            <p className={styles.eventName}>{latestEvent.name}</p>
+            <p className={styles.eventDates}>
               {latestEvent.startDate} - {latestEvent.endDate}
             </p>
           </Link>
         ) : (
-          <p className="text-gray-600">(Event Details)</p>
+          <p className={styles.noEventText}>(Event Details)</p>
         )}
       </div>
     </div>

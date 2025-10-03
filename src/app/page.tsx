@@ -5,6 +5,7 @@ import { GameCard } from '@/components/game-card'
 import { ContentCard } from '@/components/content-card'
 import { ThemeToggle } from '@/components/theme-toggle'
 import Link from 'next/link'
+import styles from './page.module.css'
 
 export default async function Home() {
   // Fetch data from tables
@@ -12,17 +13,17 @@ export default async function Home() {
   const contents = await db.select().from(content)
   
   return (
-    <div className="min-h-screen flex flex-col bg-background text-foreground">
+    <div className={styles.container}>
       {/* Header */}
-      <header className="bg-background text-foreground border-b border-gray-300 px-4 py-3">
-        <div className="max-w-7xl mx-auto flex justify-between items-center">
-          <Link href="/" className="text-xl font-bold">
+      <header className={styles.header}>
+        <div className={styles.headerContent}>
+          <Link href="/" className={styles.logo}>
             Home/Logo
           </Link>
-          <div className="flex items-center gap-3">
+          <div className={styles.headerActions}>
             <AuthHeader />
             <ThemeToggle />
-            <button className="px-4 py-2 border-2 border-foreground rounded-full text-foreground font-medium hover:bg-gray-100 transition-colors">
+            <button className={styles.searchButton}>
               Search
             </button>
           </div>
@@ -30,55 +31,55 @@ export default async function Home() {
       </header>
 
       {/* Main Content */}
-      <main className="flex-1 max-w-7xl mx-auto w-full p-4">
+      <main className={styles.main}>
         {/* Organization Content Cards Section */}
-        <section className="mb-8">
-          <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+        <section className={styles.contentSection}>
+          <div className={styles.contentGrid}>
             {contents.map((content) => (
               <ContentCard key={content.id} content={content} />
             ))}
           </div>
         </section>
         
-        <hr className="border-gray-300 mb-8" />
+        <hr className={styles.divider} />
 
         {/* Games and Regions Section */}
-        <div className="flex flex-col lg:flex-row gap-6">
+        <div className={styles.gamesRegionsContainer}>
           {/* Games Section */}
-          <section className="flex-1">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <section className={styles.gamesSection}>
+            <div className={styles.gamesGrid}>
               {games.map((game) => (
                 <GameCard key={game.id} game={game} />
               ))}
             </div>
             {games.length === 0 && (
-              <p className="text-gray-500 text-center py-8">No games found in the database.</p>
+              <p className={styles.noGames}>No games found in the database.</p>
             )}
           </section>
 
           {/* Regions Section - Desktop Sidebar */}
-          <aside className="hidden lg:flex lg:flex-col gap-4 lg:w-32">
+          <aside className={styles.regionsSidebar}>
             <Link
               href="/orgs/amer"
-              className="px-4 py-3 rounded-lg text-foreground font-semibold text-center"
+              className={styles.regionLink}
             >
               AMER
             </Link>
             <Link
               href="/orgs/pac"
-              className="px-4 py-3 rounded-lg text-foreground font-semibold text-center"
+              className={styles.regionLink}
             >
               PAC
             </Link>
             <Link
               href="/orgs/emea"
-              className="px-4 py-3 rounded-lg text-foreground font-semibold text-center"
+              className={styles.regionLink}
             >
               EMEA
             </Link>
             <Link
               href="/orgs/cn"
-              className="px-4 py-3 rounded-lg text-foreground font-semibold text-center"
+              className={styles.regionLink}
             >
               CN
             </Link>
@@ -87,29 +88,29 @@ export default async function Home() {
       </main>
 
       {/* Mobile Footer - Regions */}
-      <footer className="lg:hidden bg-white border-t border-gray-300 px-4 py-3 mt-auto">
-        <div className="flex justify-center gap-4">
+      <footer className={styles.mobileFooter}>
+        <div className={styles.footerContent}>
           <Link
             href="/orgs/cn"
-            className="px-6 py-2 rounded-full border-2 border-gray-900 text-gray-900 font-semibold hover:bg-gray-100 transition-colors"
+            className={styles.regionLink}
           >
             CN
           </Link>
           <Link
             href="/orgs/emea"
-            className="px-6 py-2 rounded-full border-2 border-gray-900 text-gray-900 font-semibold hover:bg-gray-100 transition-colors"
+            className={styles.regionLink}
           >
             EMEA
           </Link>
           <Link
             href="/orgs/pac"
-            className="px-6 py-2 rounded-full border-2 border-gray-900 text-gray-900 font-semibold hover:bg-gray-100 transition-colors"
+            className={styles.regionLink}
           >
             PAC
           </Link>
           <Link
             href="/orgs/amer"
-            className="px-6 py-2 rounded-full border-2 border-gray-900 text-gray-900 font-semibold hover:bg-gray-100 transition-colors"
+            className={styles.regionLink}
           >
             AMER
           </Link>

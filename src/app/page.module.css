@@ -1,0 +1,168 @@
+/* Main container */
+.container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--background);
+  color: var(--foreground);
+}
+
+/* Header */
+.header {
+  background-color: var(--background);
+  color: var(--foreground);
+  border-bottom: 1px solid rgb(209, 213, 219);
+  padding: 0.75rem 1rem;
+}
+
+.headerContent {
+  max-width: 80rem;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo {
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+.headerActions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.searchButton {
+  padding: 0.5rem 1rem;
+  border: 2px solid var(--foreground);
+  border-radius: 9999px;
+  color: var(--foreground);
+  font-weight: 500;
+  transition: background-color 0.15s ease-in-out;
+}
+
+.searchButton:hover {
+  background-color: rgb(243, 244, 246);
+}
+
+/* Main content */
+.main {
+  flex: 1;
+  max-width: 80rem;
+  width: 100%;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+/* Content cards section */
+.contentSection {
+  margin-bottom: 2rem;
+}
+
+.contentGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+}
+
+@media (min-width: 768px) {
+  .contentGrid {
+    grid-template-columns: repeat(5, 1fr);
+  }
+}
+
+/* Divider */
+.divider {
+  height: 2px;
+  background: linear-gradient(to bottom, var(--highlight) 0%, var(--highlight) 50%, var(--shadow) 50%, var(--shadow) 100%);
+  border: none;
+  margin-bottom: 2rem;
+  box-shadow: 0 1px 2px var(--shadow);
+}
+
+/* Games and regions layout */
+.gamesRegionsContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+@media (min-width: 1024px) {
+  .gamesRegionsContainer {
+    flex-direction: row;
+  }
+}
+
+/* Games section */
+.gamesSection {
+  flex: 1;
+}
+
+.gamesGrid {
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  gap: 1rem;
+}
+
+@media (min-width: 768px) {
+  .gamesGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.noGames {
+  color: rgb(107, 114, 128);
+  text-align: center;
+  padding: 2rem 0;
+}
+
+/* Desktop regions sidebar */
+.regionsSidebar {
+  display: none;
+  flex-direction: column;
+  gap: 1rem;
+  width: 8rem;
+}
+
+@media (min-width: 1024px) {
+  .regionsSidebar {
+    display: flex;
+  }
+}
+
+.regionLink {
+  padding: 0.75rem 1rem;
+  border-radius: 9999px;
+  color: var(--foreground);
+  font-weight: 600;
+  text-align: center;
+  text-decoration: none;
+  box-shadow: 2px 1px 1px var(--shadow),inset 3px 2px 5px var(--highlight);
+  transition: all .5s;
+}
+
+.regionLink:hover {
+    box-shadow: -2px -1px 2px var(--shadow),inset -3px -2px 3px var(--highlight);
+}
+
+/* Mobile footer */
+.mobileFooter {
+  background-color: var(--background);
+  border-top: linear-gradient(to bottom, var(--highlight) 0%, var(--highlight) 50%, var(--shadow) 50%, var(--shadow) 100%);
+  padding: 0.75rem 1rem;
+  margin-top: auto;
+}
+
+@media (min-width: 1024px) {
+  .mobileFooter {
+    display: none;
+  }
+}
+
+.footerContent {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
