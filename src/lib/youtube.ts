@@ -8,38 +8,6 @@ export interface YouTubeVideo {
 }
 
 /**
- * Converts a YouTube handle (@channelname) or channel ID to a channel ID
- * If already a channel ID (starts with UC), returns as-is
- */
-export async function getChannelId(handleOrId: string): Promise<string | null> {
-  try {
-    // Try to resolve handle to channel ID by fetching the channel page
-    const response = await fetch(`https://www.youtube.com/${handleOrId}`, {
-      redirect: 'manual',
-      headers: {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
-      }
-    })
-    
-    const html = await response.text()
-    
-    // Extract channel ID from the page source
-    const channelIdMatch = html.match(/"channelId":"([^"]+)"/) || 
-                          html.match(/channel\/([A-Za-z0-9_-]{24})/)
-    
-    if (channelIdMatch) {
-      return channelIdMatch[1]
-    }
-    
-    // Fallback: try the handle directly with RSS feed
-    return handleOrId
-  } catch (error) {
-    console.error('Error resolving channel ID:', error)
-    return handleOrId // Return as-is and hope it works
-  }
-}
-
-/**
  * Checks if a YouTube video is a Short by fetching the video page
  * @param videoId - YouTube video ID
  * @returns true if the video is a Short, false otherwise
@@ -72,14 +40,11 @@ async function isShort(videoId: string): Promise<boolean> {
 
 /**
  * Fetches the latest regular video (non-Short) from a YouTube channel using RSS feed
- * @param channelIdOrHandle - YouTube channel ID or handle (with or without @)
+ * @param channelId - YouTube channel ID
  * @returns The latest video data or null if not found
  */
-export async function getLatestVideo(channelIdOrHandle: string): Promise<YouTubeVideo | null> {
+export async function getLatestVideo(channelId: string): Promise<YouTubeVideo | null> {
   try {
-    const channelId = await getChannelId(channelIdOrHandle)
-    if (!channelId) return null
-    
     const rssUrl = `https://www.youtube.com/feeds/videos.xml?channel_id=${channelId}`
     const response = await fetch(rssUrl, {
       next: { revalidate: 3600 } // Cache for 1 hour
