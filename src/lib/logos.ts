@@ -9,9 +9,11 @@ export type LogoType = 'games' | 'orgs'
  * @param slug - The slug of the game or organization
  * @param type - The type of logo (games or orgs)
  * @returns The path to the SVG file
+ * 
+ * 
  */
 export function getLogoPath(slug: string, type: LogoType): string {
-  return `/logos/${type}/${slug}.svg`
+  return `https://rexzgglryqgnmxtvongu.supabase.co/storage/v1/object/public/Images/${type}/${slug}.svg`
 }
 
 /**

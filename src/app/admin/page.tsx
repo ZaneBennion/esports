@@ -1,3 +1,3 @@
-export default function AdminPage() {
-  return <div>Admin</div>
+export default function Admin() {
+  return <div>Admin</div>;
 }
