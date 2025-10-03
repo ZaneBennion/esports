@@ -19,7 +19,7 @@ export async function GameCard({ game }: GameCardProps) {
     <div className={styles.card}>
       {/* Game Section */}
       <Link 
-        href={`/games/${game.slug}`} 
+        href={`/${game.slug}`} 
         className={styles.gameSection}
       >
         <img 

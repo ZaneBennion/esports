@@ -5,14 +5,14 @@ import { getGameLogoPath } from '@/lib/logos'
 
 interface EventPageProps {
   params: Promise<{
-    game: string
+    slug: string
     year: string
     event: string
   }>
 }
 
 export default async function EventPage({ params }: EventPageProps) {
-  const { game: gameSlug, year, event: eventSlug } = await params
+  const { slug: gameSlug, year, event: eventSlug } = await params
   const data = await getEventBySlugAndYear(gameSlug, year, eventSlug)
 
   if (!data) {
