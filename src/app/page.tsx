@@ -21,14 +21,13 @@ export default async function Home() {
             Home/Logo
           </Link>
           <div className={styles.headerActions}>
-            <AuthHeader />
             <ThemeToggle />
-            <button className={styles.searchButton}>
-              Search
-            </button>
+            <AuthHeader />
           </div>
         </div>
       </header>
+
+      <hr className={styles.divider} />
 
       {/* Main Content */}
       <main className={styles.main}>
