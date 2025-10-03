@@ -27,12 +27,6 @@ export default async function OrgPage({ params }: OrgPageProps) {
 
     return (
       <div className="min-h-screen p-8">
-        <Link 
-          href="/" 
-          className="text-blue-600 hover:text-blue-800 mb-6 inline-block"
-        >
-          ← Back to home
-        </Link>
 
         <div className="max-w-6xl mx-auto">
           <div className="bg-white rounded-lg shadow-lg p-8 mb-8">
@@ -87,12 +81,6 @@ export default async function OrgPage({ params }: OrgPageProps) {
 
   return (
     <div className="min-h-screen p-8">
-      <Link 
-        href="/" 
-        className="text-blue-600 hover:text-blue-800 mb-6 inline-block"
-      >
-        ← Back to home
-      </Link>
 
       <div className="max-w-4xl mx-auto">
         <div className="bg-white rounded-lg shadow-lg p-8 mb-8">

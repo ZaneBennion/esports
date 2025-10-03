@@ -24,12 +24,6 @@ export default async function EventPage({ params }: EventPageProps) {
   return (
     <div className="min-h-screen p-8">
       <div className="max-w-4xl mx-auto">
-        <Link 
-          href={`/games/${game.slug}`}
-          className="text-blue-600 hover:text-blue-800 mb-6 inline-block"
-        >
-          ← Back to {game.name}
-        </Link>
 
         <div className="bg-white rounded-lg shadow-lg p-8">
           <div className="flex items-center gap-6 mb-6">
