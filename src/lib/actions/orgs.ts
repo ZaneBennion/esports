@@ -4,6 +4,7 @@ import { db } from '@/lib/db'
 import { org, player, content } from '@/lib/db/schema'
 import { eq } from 'drizzle-orm'
 import { createAdminClient } from '../supabase/admin'
+import { revalidatePath } from 'next/cache'
 
 /**
  * Get an org by its ID
@@ -98,4 +99,6 @@ export async function createOrg(formData: FormData) {
     country,
     region,
   })
+
+  revalidatePath('/admin/orgs')
 }

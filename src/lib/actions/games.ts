@@ -4,6 +4,7 @@ import { db } from '@/lib/db'
 import { game, event } from '@/lib/db/schema'
 import { eq } from 'drizzle-orm'
 import { createAdminClient } from '@/lib/supabase/admin'
+import { revalidatePath } from 'next/cache'
 
 /**
  * Get a game by its slug
@@ -57,4 +58,6 @@ export async function createGame(formData: FormData) {
     name: gameName,
     slug,
   })
+
+  revalidatePath('/admin/games')
 }

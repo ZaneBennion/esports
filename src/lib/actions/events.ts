@@ -3,6 +3,7 @@
 import { db } from '@/lib/db'
 import { event, game } from '@/lib/db/schema'
 import { eq, and, gte, lte, asc, desc } from 'drizzle-orm'
+import { revalidatePath } from 'next/cache'
 
 /**
  * Get the latest event for a specific game
@@ -140,4 +141,6 @@ export async function createEvent(formData: FormData) {
     startDate,
     endDate,
   })
+
+  revalidatePath('/admin/events')
 }
