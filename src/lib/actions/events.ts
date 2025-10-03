@@ -120,3 +120,24 @@ export async function getEventRoute(eventId: number) {
 
   return `/${gameSlug}/${year}/${eventSlug}`
 }
+
+/**
+ * Create a new event
+ */
+export async function createEvent(formData: FormData) {
+  const name = formData.get('name') as string
+  const gameId = parseInt(formData.get('gameId') as string)
+  const startDate = formData.get('startDate') as string
+  const endDate = formData.get('endDate') as string
+  
+  // Generate slug from name
+  const slug = name.toLowerCase().replace(/\s+/g, '');
+
+  await db.insert(event).values({
+    name,
+    gameId,
+    slug,
+    startDate,
+    endDate,
+  })
+}
