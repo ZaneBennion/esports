@@ -5,6 +5,7 @@ import { createClient } from '@/lib/supabase/client'
 import { getUserRole, type AppRole } from '@/lib/auth/rbac'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
+import styles from './auth-header.module.css'
 
 export function AuthHeader() {
   const [user, setUser] = useState<{ email: string; role: AppRole } | null>(null)
@@ -44,15 +45,23 @@ export function AuthHeader() {
 
   // Prevent hydration mismatch by not rendering auth-dependent content until mounted
   if (!mounted) {
-    return <div className="flex gap-4 w-[200px]"></div>
+    return <div className={styles.placeholder}></div>
   }
 
   if (user) {
     return (
-      <div className="flex items-center gap-3">
+      <div className={styles.container}>
+        {(user.role === 'admin' || user.role === 'super_admin') && (
+          <Link 
+            href="/admin"
+            className={styles.button}
+          >
+            Admin
+          </Link>
+        )}
         <button
           onClick={handleSignOut}
-          className="px-4 py-2 border-2 border-foreground rounded-full text-foreground font-medium hover:bg-gray-100 transition-colors"
+          className={styles.button}
         >
           Sign Out
         </button>
@@ -61,11 +70,13 @@ export function AuthHeader() {
   }
 
   return (
-    <Link 
-      href="/auth/signin"
-      className="px-4 py-2 border-2 border-foreground rounded-full text-foreground font-medium hover:bg-gray-100 transition-colors"
-    >
-      Account
-    </Link>
+    <div className={styles.container}>
+      <Link 
+        href="/auth/signin"
+        className={styles.button}
+      >
+        Sign In
+      </Link>
+    </div>
   )
 }

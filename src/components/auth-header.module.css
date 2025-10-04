@@ -1,0 +1,28 @@
+.placeholder {
+  display: flex;
+  gap: 1rem;
+  width: 200px;
+}
+
+.container {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.button {
+  padding: 0.75rem 1rem;
+  border-radius: 9999px;
+  color: var(--foreground);
+  background-color: var(--background);
+  font-weight: 600;
+  text-align: center;
+  text-decoration: none;
+  box-shadow: 2px 1px 1px var(--shadow),inset 3px 2px 5px var(--highlight);
+  transition: all .5s;
+}
+
+.button:hover {
+  box-shadow: -2px -1px 2px var(--shadow),inset -3px -2px 3px var(--highlight);
+}
+
