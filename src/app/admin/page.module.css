@@ -58,7 +58,6 @@
 
 .card:hover {
   box-shadow: -2px -1px 2px var(--shadow), inset -3px -2px 3px var(--highlight);
-  transform: translateY(-4px);
 }
 
 .icon {
