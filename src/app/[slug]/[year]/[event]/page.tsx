@@ -1,7 +1,10 @@
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import { getEventBySlugAndYear } from '@/lib/actions/events'
+import { getBracketsForEvent } from '@/lib/actions/brackets'
 import { getGameLogoPath } from '@/lib/logos'
+import Tabs from '@/components/tabs'
+import BracketVisualization from '@/components/bracket-visualization'
 import styles from './page.module.css'
 
 interface EventPageProps {
@@ -21,6 +24,7 @@ export default async function EventPage({ params }: EventPageProps) {
   }
 
   const { event, game } = data
+  const brackets = await getBracketsForEvent(event.id)
 
   return (
     <div className={styles.container}>
@@ -63,10 +67,19 @@ export default async function EventPage({ params }: EventPageProps) {
             </div>
           </div>
 
-          {/* TODO: Add brackets, matches, and other event details */}
           <div className={styles.bracketsSection}>
             <h2 className={styles.bracketsTitle}>Brackets</h2>
-            <p className={styles.placeholder}>Bracket information coming soon...</p>
+            {brackets.length > 0 ? (
+              <Tabs
+                tabs={brackets.map((b) => ({
+                  id: b.bracket.id.toString(),
+                  label: b.bracket.name,
+                  content: <BracketVisualization matches={b.matches} />,
+                }))}
+              />
+            ) : (
+              <p className={styles.placeholder}>No brackets available for this event.</p>
+            )}
           </div>
         </div>
       </div>

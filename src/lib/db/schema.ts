@@ -47,7 +47,7 @@ export const bracketMatch = pgTable('bracket_match', {
 
 export const match = pgTable('match', {
   id: integer().primaryKey().generatedAlwaysAsIdentity(),
-  bracketMatchId: integer('bracket_match_id').references(() => bracketMatch.id).notNull(),
+  bracketMatchId: integer('bracket_match_id').references(() => bracketMatch.id),
   teamAId: integer('team_a_id').references(() => org.id).notNull(),
   teamBId: integer('team_b_id').references(() => org.id).notNull(),
   teamAScore: integer('team_a_score'),
