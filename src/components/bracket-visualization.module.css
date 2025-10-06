@@ -76,6 +76,15 @@
   background-color: rgba(34, 197, 94, 0.3);
 }
 
+.derived {
+  background-color: rgba(59, 130, 246, 0.15);
+  border-left: 2px solid rgba(59, 130, 246, 0.5);
+}
+
+.derived:hover {
+  background-color: rgba(59, 130, 246, 0.25);
+}
+
 .teamName {
   color: var(--foreground);
   font-size: 0.875rem;

@@ -7,6 +7,36 @@ type BracketVisualizationProps = {
   matches: BracketMatchWithDetails[]
 }
 
+type TeamInfo = {
+  id: number
+  name: string
+  slug: string
+  country: string
+  region: string
+}
+
+// Helper function to determine which team advanced from a parent match
+function getAdvancingTeam(
+  parentMatch: BracketMatchWithDetails['parentMatch1'] | BracketMatchWithDetails['parentMatch2'],
+  advanceWinner: boolean | null
+): TeamInfo | null {
+  if (!parentMatch?.match || !parentMatch.match.result) {
+    return null
+  }
+
+  const match = parentMatch.match
+  const isTeamAWinner = match.result === 'team_a'
+  
+  // If advanceWinner is true, the winner advances; if false, the loser advances
+  if (advanceWinner === true) {
+    return isTeamAWinner ? parentMatch.teamA : parentMatch.teamB
+  } else if (advanceWinner === false) {
+    return isTeamAWinner ? parentMatch.teamB : parentMatch.teamA
+  }
+  
+  return null
+}
+
 export default function BracketVisualization({ matches }: BracketVisualizationProps) {
   if (matches.length === 0) {
     return (
@@ -44,9 +74,32 @@ export default function BracketVisualization({ matches }: BracketVisualizationPr
             <div className={styles.roundHeader}>Round {round}</div>
             <div className={styles.roundMatches}>
               {roundMatches.map((matchData) => {
-                const { bracketMatch, match, teamA, teamB } = matchData
+                const { bracketMatch, match, teamA, teamB, parentMatch1, parentMatch2 } = matchData
                 const isWinnerA = match?.result === 'team_a'
                 const isWinnerB = match?.result === 'team_b'
+
+                // Determine teams to display (either from match or derived from parent matches)
+                let displayTeamA = teamA
+                let displayTeamB = teamB
+                let isDerived = false
+
+                if (!match) {
+                  // Get teams from parent matches if available
+                  const derivedTeamA = getAdvancingTeam(parentMatch1, bracketMatch.advanceWinner1)
+                  const derivedTeamB = getAdvancingTeam(parentMatch2, bracketMatch.advanceWinner2)
+
+                  if (derivedTeamA) {
+                    displayTeamA = derivedTeamA
+                    isDerived = true
+                  }
+
+                  if (derivedTeamB) {
+                    displayTeamB = derivedTeamB
+                    isDerived = true
+                  }
+                }
+
+                const hasTeams = displayTeamA || displayTeamB
 
                 return (
                   <div key={bracketMatch.id} className={styles.matchCard}>
@@ -54,18 +107,22 @@ export default function BracketVisualization({ matches }: BracketVisualizationPr
                       Match {bracketMatch.matchInRound}
                     </div>
                     
-                    {match && teamA && teamB ? (
+                    {hasTeams ? (
                       <>
-                        <div className={`${styles.team} ${isWinnerA ? styles.winner : ''}`}>
-                          <span className={styles.teamName}>{teamA.name}</span>
+                        <div className={`${styles.team} ${isWinnerA ? styles.winner : ''} ${isDerived && !match ? styles.derived : ''}`}>
+                          <span className={styles.teamName}>
+                            {displayTeamA?.name || 'TBD'}
+                          </span>
                           <span className={styles.teamScore}>
-                            {match.teamAScore ?? '-'}
+                            {match?.teamAScore ?? '-'}
                           </span>
                         </div>
-                        <div className={`${styles.team} ${isWinnerB ? styles.winner : ''}`}>
-                          <span className={styles.teamName}>{teamB.name}</span>
+                        <div className={`${styles.team} ${isWinnerB ? styles.winner : ''} ${isDerived && !match ? styles.derived : ''}`}>
+                          <span className={styles.teamName}>
+                            {displayTeamB?.name || 'TBD'}
+                          </span>
                           <span className={styles.teamScore}>
-                            {match.teamBScore ?? '-'}
+                            {match?.teamBScore ?? '-'}
                           </span>
                         </div>
                       </>
