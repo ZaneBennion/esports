@@ -1,5 +1,5 @@
-import { AuthHeader } from '@/components/auth-header'
-import { ThemeToggle } from '@/components/theme-toggle'
+import { AuthHeader } from '@/components/header/auth-header'
+import { ThemeToggle } from '@/components/header/theme-toggle'
 import Link from 'next/link'
 import styles from './header.module.css'
 
