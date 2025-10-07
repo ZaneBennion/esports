@@ -12,8 +12,8 @@ export const userRoles = pgTable('user_roles', {
 
 export const game = pgTable('game', {
   id: integer().primaryKey().generatedAlwaysAsIdentity(),
-  name: text().notNull(),
-  slug: text().notNull(),
+  name: text().notNull().unique(),
+  slug: text().notNull().unique(),
 })
 
 export const event = pgTable('event', {
