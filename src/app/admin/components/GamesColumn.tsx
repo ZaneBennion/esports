@@ -3,10 +3,12 @@
 import { Game } from '@/lib/db/schema';
 import { createGame } from '@/lib/actions/games';
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import styles from './Column.module.css';
 
 export default function GamesColumn({ games }: { games: Game[] }) {
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -25,8 +27,7 @@ export default function GamesColumn({ games }: { games: Game[] }) {
   };
 
   const handleGameClick = (game: Game) => {
-    // Placeholder functionality - will be implemented later
-    console.log('Game clicked:', game);
+    router.push(`/admin/games/${game.id}`);
   };
 
   return (

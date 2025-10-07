@@ -142,5 +142,5 @@ export async function createEvent(formData: FormData) {
     endDate,
   })
 
-  revalidatePath('/admin/events')
+  revalidatePath(`/admin/games/${gameId}`)
 }

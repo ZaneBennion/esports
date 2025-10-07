@@ -39,6 +39,7 @@ export async function getEventsForGame(gameId: number) {
     .select()
     .from(event)
     .where(eq(event.gameId, gameId))
+    .orderBy(event.startDate)
 
   return events
 }
