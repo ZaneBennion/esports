@@ -3,12 +3,10 @@
 import { db } from '@/lib/db'
 import { org, player, content } from '@/lib/db/schema'
 import { eq } from 'drizzle-orm'
-import { createAdminClient } from '../supabase/admin'
 import { revalidatePath } from 'next/cache'
+import { uploadImage } from './storage'
 
-/**
- * Get all orgs
- */
+
 export async function getAllOrgs() {
   const orgs = await db
     .select()
@@ -18,9 +16,6 @@ export async function getAllOrgs() {
   return orgs
 }
 
-/**
- * Get an org by its ID
- */
 export async function getOrgById(id: number) {
   const orgs = await db
     .select()
@@ -31,9 +26,6 @@ export async function getOrgById(id: number) {
   return orgs.length > 0 ? orgs[0] : null
 }
 
-/**
- * Get an org by its slug
- */
 export async function getOrgBySlug(slug: string) {
   const orgs = await db
     .select()
@@ -44,9 +36,6 @@ export async function getOrgBySlug(slug: string) {
   return orgs.length > 0 ? orgs[0] : null
 }
 
-/**
- * Get all players for a specific org
- */
 export async function getPlayersForOrg(orgId: number) {
   const players = await db
     .select()
@@ -56,9 +45,6 @@ export async function getPlayersForOrg(orgId: number) {
   return players
 }
 
-/**
- * Get all content for a specific org
- */
 export async function getContentForOrg(orgId: number) {
   const contents = await db
     .select()
@@ -68,9 +54,6 @@ export async function getContentForOrg(orgId: number) {
   return contents
 }
 
-/**
- * Get all orgs by region
- */
 export async function getOrgsByRegion(region: string) {
   const orgs = await db
     .select()
@@ -80,10 +63,6 @@ export async function getOrgsByRegion(region: string) {
   return orgs
 }
 
-/**
- * Get the route string for a specific org
- * Format: /orgs/[orgid]/[slug]
- */
 export async function getOrgRoute(orgId: number) {
   const orgData = await db
     .select({
@@ -109,23 +88,7 @@ export async function createOrg(formData: FormData) {
   const country = formData.get('country') as string
   const region = formData.get('region') as string
 
-  // Upload logo to Supabase Storage
-  if (logoFile && logoFile.size > 0) {
-    const supabase = createAdminClient()
-    const arrayBuffer = await logoFile.arrayBuffer()
-    const buffer = Buffer.from(arrayBuffer)
-
-    const { error } = await supabase.storage
-      .from('Images')
-      .upload(`orgs/${slug}.svg`, buffer, {
-        contentType: 'image/svg+xml',
-        upsert: true, // Overwrite if exists
-      })
-
-    if (error) {
-      throw new Error(`Failed to upload logo: ${error.message}`)
-    }
-  }
+  await uploadImage(logoFile, slug, 'orgs')
 
   await db.insert(org).values({
     name: orgName,
@@ -134,6 +97,5 @@ export async function createOrg(formData: FormData) {
     region,
   })
 
-  revalidatePath('/admin/orgs')
   revalidatePath('/admin')
 }

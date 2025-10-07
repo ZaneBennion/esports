@@ -5,18 +5,9 @@ import { event, game } from '@/lib/db/schema'
 import { eq, and, gte, lte, asc, desc } from 'drizzle-orm'
 import { revalidatePath } from 'next/cache'
 
-/**
- * Get the latest event for a specific game
- * Priority:
- * 1. Current event (between start and end date)
- * 2. Next upcoming event (closest start date in the future)
- * 3. Latest past event (most recent end date)
- */
-export async function getLatestEventForGame(gameId: number) {
-  const now = new Date().toISOString().split('T')[0] // Get current date in YYYY-MM-DD format
 
-  // First, try to find a current event (today is between start and end date)
-  const currentEvent = await db
+async function getCurrentEventForGame(gameId: number, now: string) {
+  const result = await db
     .select()
     .from(event)
     .where(
@@ -28,12 +19,11 @@ export async function getLatestEventForGame(gameId: number) {
     )
     .limit(1)
 
-  if (currentEvent.length > 0) {
-    return currentEvent[0]
-  }
+  return result.length > 0 ? result[0] : null
+}
 
-  // If no current event, find the next upcoming event (start date in the future)
-  const upcomingEvent = await db
+async function getUpcomingEventForGame(gameId: number, now: string) {
+  const result = await db
     .select()
     .from(event)
     .where(
@@ -45,12 +35,11 @@ export async function getLatestEventForGame(gameId: number) {
     .orderBy(asc(event.startDate))
     .limit(1)
 
-  if (upcomingEvent.length > 0) {
-    return upcomingEvent[0]
-  }
+  return result.length > 0 ? result[0] : null
+}
 
-  // If no upcoming event, find the latest past event (most recent end date)
-  const pastEvent = await db
+async function getPastEventForGame(gameId: number, now: string) {
+  const result = await db
     .select()
     .from(event)
     .where(
@@ -62,17 +51,30 @@ export async function getLatestEventForGame(gameId: number) {
     .orderBy(desc(event.endDate))
     .limit(1)
 
-  if (pastEvent.length > 0) {
-    return pastEvent[0]
+  return result.length > 0 ? result[0] : null
+}
+
+export async function getLatestEventForGame(gameId: number) {
+  const now = new Date().toISOString().split('T')[0] // Get current date in YYYY-MM-DD format
+
+  const currentEvent = await getCurrentEventForGame(gameId, now)
+  if (currentEvent) {
+    return currentEvent
   }
 
-  // No events found for this game
+  const upcomingEvent = await getUpcomingEventForGame(gameId, now)
+  if (upcomingEvent) {
+    return upcomingEvent
+  }
+
+  const pastEvent = await getPastEventForGame(gameId, now)
+  if (pastEvent) {
+    return pastEvent
+  }
+
   return null
 }
 
-/**
- * Get an event by its ID
- */
 export async function getEventById(eventId: number) {
   const result = await db
     .select({
@@ -87,10 +89,6 @@ export async function getEventById(eventId: number) {
   return result.length > 0 ? result[0] : null
 }
 
-/**
- * Get the route string for a specific event
- * Format: /event/[eventid]/[event-slug]
- */
 export async function getEventRoute(eventId: number) {
   const eventData = await db
     .select({
@@ -109,17 +107,12 @@ export async function getEventRoute(eventId: number) {
   return `/event/${eventId}/${eventSlug}`
 }
 
-/**
- * Create a new event
- */
 export async function createEvent(formData: FormData) {
   const name = formData.get('name') as string
+  const slug = name.toLowerCase().replace(/\s+/g, '');
   const gameId = parseInt(formData.get('gameId') as string)
   const startDate = formData.get('startDate') as string
   const endDate = formData.get('endDate') as string
-  
-  // Generate slug from name
-  const slug = name.toLowerCase().replace(/\s+/g, '');
 
   await db.insert(event).values({
     name,

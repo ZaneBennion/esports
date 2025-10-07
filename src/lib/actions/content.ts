@@ -3,8 +3,16 @@
 import { db } from '@/lib/db'
 import { content } from '@/lib/db/schema'
 import { eq } from 'drizzle-orm'
-import { createAdminClient } from '../supabase/admin'
 import { revalidatePath } from 'next/cache'
+
+export async function getContentForOrg(orgId: number) {
+  const result = await db
+    .select()
+    .from(content)
+    .where(eq(content.orgId, orgId))
+    
+  return result
+}
 
 export async function createContent(formData: FormData) {
   const name = formData.get('name') as string
