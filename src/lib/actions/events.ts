@@ -71,33 +71,6 @@ export async function getLatestEventForGame(gameId: number) {
 }
 
 /**
- * Get an event by game slug, year, and event slug
- * @deprecated Use getEventById instead - this function is kept for backwards compatibility
- */
-export async function getEventBySlugAndYear(
-  gameSlug: string,
-  year: string,
-  eventSlug: string
-) {
-  const events = await db
-    .select({
-      event: event,
-      game: game,
-    })
-    .from(event)
-    .innerJoin(game, eq(event.gameId, game.id))
-    .where(eq(game.slug, gameSlug))
-
-  // Filter events by year from start date and event slug
-  const matchingEvent = events.find((e) => {
-    const eventYear = new Date(e.event.startDate).getFullYear().toString()
-    return eventYear === year && e.event.slug === eventSlug
-  })
-
-  return matchingEvent || null
-}
-
-/**
  * Get an event by its ID
  */
 export async function getEventById(eventId: number) {
