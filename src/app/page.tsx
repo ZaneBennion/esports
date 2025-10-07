@@ -5,6 +5,13 @@ import { ContentCard } from '@/components/content-card'
 import Link from 'next/link'
 import styles from './page.module.css'
 
+const REGIONS = [
+  { href: '/orgs/amer', label: 'AMER' },
+  { href: '/orgs/pac', label: 'PAC' },
+  { href: '/orgs/emea', label: 'EMEA' },
+  { href: '/orgs/cn', label: 'CN' },
+]
+
 export default async function Home() {
   // Fetch data from tables
   const games = await db.select().from(game)
@@ -41,30 +48,15 @@ export default async function Home() {
 
           {/* Regions Section - Desktop Sidebar */}
           <aside className={styles.regionsSidebar}>
-            <Link
-              href="/orgs/amer"
-              className={styles.regionLink}
-            >
-              AMER
-            </Link>
-            <Link
-              href="/orgs/pac"
-              className={styles.regionLink}
-            >
-              PAC
-            </Link>
-            <Link
-              href="/orgs/emea"
-              className={styles.regionLink}
-            >
-              EMEA
-            </Link>
-            <Link
-              href="/orgs/cn"
-              className={styles.regionLink}
-            >
-              CN
-            </Link>
+            {REGIONS.map((region) => (
+              <Link
+                key={region.href}
+                href={region.href}
+                className={styles.regionLink}
+              >
+                {region.label}
+              </Link>
+            ))}
           </aside>
         </div>
       </main>
@@ -72,30 +64,15 @@ export default async function Home() {
       {/* Mobile Footer - Regions */}
       <footer className={styles.mobileFooter}>
         <div className={styles.footerContent}>
-          <Link
-            href="/orgs/cn"
-            className={styles.regionLink}
-          >
-            CN
-          </Link>
-          <Link
-            href="/orgs/emea"
-            className={styles.regionLink}
-          >
-            EMEA
-          </Link>
-          <Link
-            href="/orgs/pac"
-            className={styles.regionLink}
-          >
-            PAC
-          </Link>
-          <Link
-            href="/orgs/amer"
-            className={styles.regionLink}
-          >
-            AMER
-          </Link>
+          {REGIONS.toReversed().map((region) => (
+            <Link
+              key={region.href}
+              href={region.href}
+              className={styles.regionLink}
+            >
+              {region.label}
+            </Link>
+          ))}
         </div>
       </footer>
     </div>
