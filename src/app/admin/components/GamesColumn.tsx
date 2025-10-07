@@ -68,7 +68,6 @@ export default function GamesColumn({ games }: { games: Game[] }) {
               onClick={() => handleGameClick(game)}
             >
               <span className={styles.itemName}>{game.name}</span>
-              <span className={styles.itemSlug}>{game.slug}</span>
             </div>
           ))
         )}

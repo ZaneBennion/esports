@@ -13,7 +13,6 @@ export default async function Admin() {
     <div className={styles.container}>
       <div className={styles.header}>
         <h1 className={styles.title}>Admin Dashboard</h1>
-        <p className={styles.subtitle}>Manage your esports platform</p>
       </div>
       
       <div className={styles.columnsContainer}>

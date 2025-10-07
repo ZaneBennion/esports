@@ -110,7 +110,6 @@ export default function OrgsColumn({ orgs }: { orgs: Org[] }) {
               onClick={() => handleOrgClick(org)}
             >
               <span className={styles.itemName}>{org.name}</span>
-              <span className={styles.itemSlug}>{org.slug}</span>
               <span className={styles.itemRegion}>{org.region.toUpperCase()}</span>
             </div>
           ))
