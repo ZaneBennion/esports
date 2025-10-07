@@ -67,12 +67,14 @@ export const org = pgTable('org', {
 export const content = pgTable('content', {
   id: integer().primaryKey().generatedAlwaysAsIdentity(),
   link: text().notNull(),
+  name: text().notNull(),
   orgId: integer('org_id').references(() => org.id).notNull(),
 })
 
 export const player = pgTable('player', {
   id: integer().primaryKey().generatedAlwaysAsIdentity(),
   name: text().notNull(),
+  slug: text().notNull(),
   orgId: integer('org_id').references(() => org.id),
 })
 
