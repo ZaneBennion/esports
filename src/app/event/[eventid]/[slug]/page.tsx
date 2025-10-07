@@ -1,6 +1,6 @@
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
-import { getEventBySlugAndYear } from '@/lib/actions/events'
+import { getEventById } from '@/lib/actions/events'
 import { getBracketsForEvent } from '@/lib/actions/brackets'
 import { getGameLogoPath } from '@/lib/logos'
 import Tabs from '@/components/tabs'
@@ -9,21 +9,26 @@ import styles from './page.module.css'
 
 interface EventPageProps {
   params: Promise<{
+    eventid: string
     slug: string
-    year: string
-    event: string
   }>
 }
 
 export default async function EventPage({ params }: EventPageProps) {
-  const { slug: gameSlug, year, event: eventSlug } = await params
-  const data = await getEventBySlugAndYear(gameSlug, year, eventSlug)
+  const { eventid, slug: eventSlug } = await params
+  const data = await getEventById(parseInt(eventid))
 
   if (!data) {
     notFound()
   }
 
   const { event, game } = data
+  
+  // Verify the slug matches (for SEO and URL consistency)
+  if (event.slug !== eventSlug) {
+    notFound()
+  }
+
   const brackets = await getBracketsForEvent(event.id)
 
   return (
@@ -86,3 +91,4 @@ export default async function EventPage({ params }: EventPageProps) {
     </div>
   )
 }
+

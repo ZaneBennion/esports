@@ -18,3 +18,4 @@ export default function EventNotFound() {
     </div>
   )
 }
+

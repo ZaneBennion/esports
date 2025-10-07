@@ -72,6 +72,7 @@ export async function getLatestEventForGame(gameId: number) {
 
 /**
  * Get an event by game slug, year, and event slug
+ * @deprecated Use getEventById instead - this function is kept for backwards compatibility
  */
 export async function getEventBySlugAndYear(
   gameSlug: string,
@@ -97,18 +98,32 @@ export async function getEventBySlugAndYear(
 }
 
 /**
+ * Get an event by its ID
+ */
+export async function getEventById(eventId: number) {
+  const result = await db
+    .select({
+      event: event,
+      game: game,
+    })
+    .from(event)
+    .innerJoin(game, eq(event.gameId, game.id))
+    .where(eq(event.id, eventId))
+    .limit(1)
+
+  return result.length > 0 ? result[0] : null
+}
+
+/**
  * Get the route string for a specific event
- * Format: /[game-slug]/[year]/[event-slug]
+ * Format: /event/[eventid]/[event-slug]
  */
 export async function getEventRoute(eventId: number) {
   const eventData = await db
     .select({
       eventSlug: event.slug,
-      startDate: event.startDate,
-      gameSlug: game.slug,
     })
     .from(event)
-    .innerJoin(game, eq(event.gameId, game.id))
     .where(eq(event.id, eventId))
     .limit(1)
 
@@ -116,10 +131,9 @@ export async function getEventRoute(eventId: number) {
     return null
   }
 
-  const { eventSlug, startDate, gameSlug } = eventData[0]
-  const year = new Date(startDate).getFullYear()
+  const { eventSlug } = eventData[0]
 
-  return `/${gameSlug}/${year}/${eventSlug}`
+  return `/event/${eventId}/${eventSlug}`
 }
 
 /**
