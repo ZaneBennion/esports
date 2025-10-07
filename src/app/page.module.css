@@ -5,6 +5,13 @@
   flex-direction: column;
   background-color: var(--background);
   color: var(--foreground);
+  overflow: hidden;
+}
+
+@media (min-width: 768px) {
+  .container {
+    overflow: auto;
+  }
 }
 
 /* Main content */
@@ -14,23 +21,52 @@
   width: 100%;
   margin: 0 auto;
   padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+@media (min-width: 768px) {
+  .main {
+    overflow: visible;
+  }
 }
 
 /* Content cards section */
 .contentSection {
-  margin-bottom: 2rem;
+  margin-bottom: 1rem;
+  flex-shrink: 0;
 }
 
 .contentGrid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  display: flex;
   gap: 1rem;
-  align-items: start; /* Ensures all grid items align to the top */
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding-bottom: 0.5rem;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+}
+
+.contentGrid > * {
+  flex: 0 0 auto;
+  width: 45%;
+  min-width: 150px;
 }
 
 @media (min-width: 768px) {
+  .contentSection {
+    margin-bottom: 2rem;
+  }
+
   .contentGrid {
+    display: grid;
     grid-template-columns: repeat(5, 1fr);
+    overflow: visible;
+  }
+
+  .contentGrid > * {
+    width: auto;
   }
 }
 
@@ -39,8 +75,15 @@
   height: 2px;
   background: linear-gradient(to bottom, var(--highlight) 0%, var(--highlight) 50%, var(--shadow) 50%, var(--shadow) 100%);
   border: none;
-  margin-bottom: 2rem;
+  margin-bottom: 1rem;
   box-shadow: 0 1px 2px var(--shadow);
+  flex-shrink: 0;
+}
+
+@media (min-width: 768px) {
+  .divider {
+    margin-bottom: 2rem;
+  }
 }
 
 /* Games and regions layout */
@@ -48,26 +91,39 @@
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
+  flex: 1;
+  overflow: hidden;
+  min-height: 0;
 }
 
 @media (min-width: 1024px) {
   .gamesRegionsContainer {
     flex-direction: row;
+    overflow: visible;
   }
 }
 
 /* Games section */
 .gamesSection {
   flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+  min-height: 0;
 }
 
 .gamesGrid {
   display: grid;
   grid-template-columns: repeat(1, 1fr);
   gap: 1rem;
+  padding-right: 0.25rem;
 }
 
 @media (min-width: 768px) {
+  .gamesSection {
+    overflow: visible;
+  }
+
   .gamesGrid {
     grid-template-columns: repeat(2, 1fr);
   }
@@ -102,6 +158,7 @@
   text-decoration: none;
   box-shadow: 2px 1px 1px var(--shadow),inset 3px 2px 5px var(--highlight);
   transition: all .5s;
+  width: 100%;
 }
 
 .regionLink:hover {
@@ -111,9 +168,14 @@
 /* Mobile footer */
 .mobileFooter {
   background-color: var(--background);
-  border-top: linear-gradient(to bottom, var(--highlight) 0%, var(--highlight) 50%, var(--shadow) 50%, var(--shadow) 100%);
+  border-top: 2px solid;
+  border-image: linear-gradient(to bottom, var(--highlight) 0%, var(--highlight) 50%, var(--shadow) 50%, var(--shadow) 100%) 1;
   padding: 0.75rem 1rem;
-  margin-top: auto;
+  flex-shrink: 0;
+  width: 100%;
+  position: fixed;
+  bottom: 0;
+  z-index: 10;
 }
 
 @media (min-width: 1024px) {
