@@ -27,7 +27,7 @@ export async function ContentCard({ content }: ContentCardProps) {
     <div className={styles.container}>
       {/* Organization Name */}
       <Link 
-        href={org ? `/orgs/${org.slug}` : '#'} 
+        href={org ? `/orgs/${org.id}/${org.slug}` : '#'} 
         className={styles.orgLink}
       >
         {video.channelName}

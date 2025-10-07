@@ -80,6 +80,28 @@ export async function getOrgsByRegion(region: string) {
   return orgs
 }
 
+/**
+ * Get the route string for a specific org
+ * Format: /orgs/[orgid]/[slug]
+ */
+export async function getOrgRoute(orgId: number) {
+  const orgData = await db
+    .select({
+      slug: org.slug,
+    })
+    .from(org)
+    .where(eq(org.id, orgId))
+    .limit(1)
+
+  if (orgData.length === 0) {
+    return null
+  }
+
+  const { slug } = orgData[0]
+
+  return `/orgs/${orgId}/${slug}`
+}
+
 export async function createOrg(formData: FormData) {
   const orgName = formData.get('name') as string
   const slug = orgName.toLowerCase().replace(/\s+/g, '')
