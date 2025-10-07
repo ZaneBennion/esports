@@ -7,6 +7,18 @@ import { createAdminClient } from '../supabase/admin'
 import { revalidatePath } from 'next/cache'
 
 /**
+ * Get all orgs
+ */
+export async function getAllOrgs() {
+  const orgs = await db
+    .select()
+    .from(org)
+    .orderBy(org.name)
+
+  return orgs
+}
+
+/**
  * Get an org by its ID
  */
 export async function getOrgById(id: number) {
@@ -101,4 +113,5 @@ export async function createOrg(formData: FormData) {
   })
 
   revalidatePath('/admin/orgs')
+  revalidatePath('/admin')
 }

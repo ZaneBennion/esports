@@ -7,6 +7,18 @@ import { createAdminClient } from '@/lib/supabase/admin'
 import { revalidatePath } from 'next/cache'
 
 /**
+ * Get all games
+ */
+export async function getAllGames() {
+  const games = await db
+    .select()
+    .from(game)
+    .orderBy(game.name)
+
+  return games
+}
+
+/**
  * Get a game by its slug
  */
 export async function getGameBySlug(slug: string) {
@@ -60,4 +72,5 @@ export async function createGame(formData: FormData) {
   })
 
   revalidatePath('/admin/games')
+  revalidatePath('/admin')
 }
