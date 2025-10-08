@@ -2,7 +2,7 @@
 
 import { createAdminClient } from '../supabase/admin'
 
-export async function uploadImage(logoFile: File, slug: string, type: string) {
+export async function uploadImage(logoFile: File, id: number, type: string) {
   if (!logoFile || logoFile.size === 0) {
     return
   }
@@ -13,7 +13,7 @@ export async function uploadImage(logoFile: File, slug: string, type: string) {
 
   const { error } = await supabase.storage
     .from('Images')
-    .upload(`${type}/${slug}.svg`, buffer, {
+    .upload(`${type}/${id}.svg`, buffer, {
       contentType: 'image/svg+xml',
       upsert: true, // Overwrite if exists
     })
@@ -22,4 +22,3 @@ export async function uploadImage(logoFile: File, slug: string, type: string) {
     throw new Error(`Failed to upload logo: ${error.message}`)
   }
 }
-

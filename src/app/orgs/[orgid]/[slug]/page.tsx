@@ -2,7 +2,7 @@ import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import { getOrgById, getPlayersForOrg, getContentForOrg } from '@/lib/actions/orgs'
 import { ContentCard } from '@/components/content-card'
-import { getOrgLogoPath } from '@/lib/logos'
+import { getOrgLogoPath } from '@/lib/utils/logos'
 
 interface OrgPageProps {
   params: Promise<{
@@ -33,7 +33,7 @@ export default async function OrgPage({ params }: OrgPageProps) {
         <div className="bg-white rounded-lg shadow-lg p-8 mb-8">
           <div className="mb-6">
             <img 
-              src={getOrgLogoPath(org.slug)} 
+              src={getOrgLogoPath(org.id)} 
               alt={`${org.name} logo`}
             />
             <h1 className="text-4xl font-bold text-gray-900 mb-3">{org.name}</h1>

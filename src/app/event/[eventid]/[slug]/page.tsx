@@ -2,7 +2,7 @@ import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import { getEventById } from '@/lib/actions/events'
 import { getBracketsForEvent } from '@/lib/actions/brackets'
-import { getGameLogoPath } from '@/lib/logos'
+import { getGameLogoPath } from '@/lib/utils/logos'
 import Tabs from '@/components/tabs'
 import BracketVisualization from '@/components/bracket-visualization'
 import styles from './page.module.css'
@@ -38,7 +38,7 @@ export default async function EventPage({ params }: EventPageProps) {
         <div className={styles.card}>
           <div className={styles.header}>
             <img 
-              src={getGameLogoPath(game.slug)} 
+              src={getGameLogoPath(game.id)} 
               alt={`${game.name} logo`}
               className={styles.logo}
             />

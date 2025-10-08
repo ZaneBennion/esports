@@ -2,7 +2,7 @@ import { getLatestVideo } from '@/lib/youtube'
 import { getOrgById } from '@/lib/actions/orgs'
 import Link from 'next/link'
 import styles from './content-card.module.css'
-import { getOrgLogoPath } from '@/lib/logos'
+import { getOrgLogoPath } from '@/lib/utils/logos'
 
 interface ContentCardProps {
   content: {
@@ -33,7 +33,7 @@ export async function ContentCard({ content }: ContentCardProps) {
         {video.channelName}
         {org && (
           <div 
-            style={{ maskImage: `url(${getOrgLogoPath(org.slug)})`, WebkitMaskImage: `url(${getOrgLogoPath(org.slug)})` }}
+            style={{ maskImage: `url(${getOrgLogoPath(org.id)})`, WebkitMaskImage: `url(${getOrgLogoPath(org.id)})` }}
             className={styles.orgLogo}
             role="img"
             aria-label={`${org.name} logo`}

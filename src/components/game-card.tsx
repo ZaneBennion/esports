@@ -1,4 +1,4 @@
-import { getGameLogoPath } from '@/lib/logos'
+import { getGameLogoPath } from '@/lib/utils/logos'
 import { getLatestEventForGame, getEventRoute } from '@/lib/actions/events'
 import Link from 'next/link'
 import styles from './game-card.module.css'
@@ -23,7 +23,7 @@ export async function GameCard({ game }: GameCardProps) {
         className={styles.gameSection}
       >
         <img 
-          src={getGameLogoPath(game.slug)} 
+          src={getGameLogoPath(game.id)} 
           alt={`${game.name} logo`}
           className={styles.gameLogo}
         />

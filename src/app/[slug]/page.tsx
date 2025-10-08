@@ -1,7 +1,7 @@
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import { getGameBySlug, getEventsForGame } from '@/lib/actions/games'
-import { getGameLogoPath } from '@/lib/logos'
+import { getGameLogoPath } from '@/lib/utils/logos'
 import { getEventRoute } from '@/lib/actions/events'
 
 interface GamePageProps {
@@ -35,7 +35,7 @@ export default async function GamePage({ params }: GamePageProps) {
         <div className="bg-white rounded-lg shadow-lg p-8 mb-8">
           <div className="flex items-center gap-6 mb-6">
             <img 
-              src={getGameLogoPath(game.slug)} 
+              src={getGameLogoPath(game.id)} 
               alt={`${game.name} logo`}
               className="w-24 h-24 object-contain"
             />

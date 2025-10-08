@@ -41,12 +41,13 @@ export async function createGame(formData: FormData) {
   const slug = gameName.toLowerCase().replace(/\s+/g, '')
   const logoFile = formData.get('logo') as File
 
-  await uploadImage(logoFile, slug, 'games')  
-
-  await db.insert(game).values({
+  const result = await db.insert(game).values({
     name: gameName,
     slug,
-  })
+  }).returning({ id: game.id })
+
+  const gameId = result[0].id
+  await uploadImage(logoFile, gameId, 'games')
 
   revalidatePath('/admin')
 }

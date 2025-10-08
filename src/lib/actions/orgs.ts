@@ -88,14 +88,15 @@ export async function createOrg(formData: FormData) {
   const country = formData.get('country') as string
   const region = formData.get('region') as string
 
-  await uploadImage(logoFile, slug, 'orgs')
-
-  await db.insert(org).values({
+  const result = await db.insert(org).values({
     name: orgName,
     slug,
     country,
     region,
-  })
+  }).returning({ id: org.id })
+
+  const orgId = result[0].id
+  await uploadImage(logoFile, orgId, 'orgs')
 
   revalidatePath('/admin')
 }
