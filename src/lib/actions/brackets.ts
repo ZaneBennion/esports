@@ -30,13 +30,9 @@ export type BracketWithMatches = {
 }
 
 /**
- * Fetch a single parent match with its bracket match and match data
+ * General function to fetch bracket matches with match data
  */
-async function fetchParentMatchData(parentMatchId: number | null) {
-  if (!parentMatchId) {
-    return []
-  }
-
+async function fetchBracketMatches(whereClause: any) {
   return db
     .select({
       bracketMatch: bracketMatch,
@@ -44,8 +40,7 @@ async function fetchParentMatchData(parentMatchId: number | null) {
     })
     .from(bracketMatch)
     .leftJoin(match, eq(bracketMatch.id, match.bracketMatchId))
-    .where(eq(bracketMatch.id, parentMatchId))
-    .limit(1)
+    .where(whereClause)
 }
 
 /**
@@ -65,28 +60,16 @@ async function getTeamsForMatch(matchData: typeof match.$inferSelect | null) {
 }
 
 /**
- * Enrich parent match data with team information
+ * Enrich bracket match data with team information
  */
-async function enrichParentMatchData(
-  parentMatchData: Array<{
-    bracketMatch: typeof bracketMatch.$inferSelect
-    match: typeof match.$inferSelect | null
-  }>
-) {
-  if (parentMatchData.length === 0) {
-    return {
-      bracketMatch: null,
-      match: null,
-      teamA: null,
-      teamB: null,
-    }
-  }
-
-  const { teamA, teamB } = await getTeamsForMatch(parentMatchData[0].match)
-
+async function enrichMatchWithTeams(matchData: {
+  bracketMatch: typeof bracketMatch.$inferSelect
+  match: typeof match.$inferSelect | null
+}) {
+  const { teamA, teamB } = await getTeamsForMatch(matchData.match)
   return {
-    bracketMatch: parentMatchData[0].bracketMatch,
-    match: parentMatchData[0].match,
+    bracketMatch: matchData.bracketMatch,
+    match: matchData.match,
     teamA,
     teamB,
   }
@@ -103,14 +86,22 @@ async function getBracketMatchDetails(
 ): Promise<BracketMatchWithDetails> {
   // Fetch parent match data in parallel
   const [parentMatch1Data, parentMatch2Data] = await Promise.all([
-    fetchParentMatchData(bracketMatchData.bracketMatch.parentMatch1Id),
-    fetchParentMatchData(bracketMatchData.bracketMatch.parentMatch2Id),
+    bracketMatchData.bracketMatch.parentMatch1Id
+      ? fetchBracketMatches(eq(bracketMatch.id, bracketMatchData.bracketMatch.parentMatch1Id)).then(r => r[0])
+      : null,
+    bracketMatchData.bracketMatch.parentMatch2Id
+      ? fetchBracketMatches(eq(bracketMatch.id, bracketMatchData.bracketMatch.parentMatch2Id)).then(r => r[0])
+      : null,
   ])
 
-  // Enrich parent matches with team data
+  // Enrich parent matches with team data (or use null structure if no parent)
   const [parentMatch1, parentMatch2] = await Promise.all([
-    enrichParentMatchData(parentMatch1Data),
-    enrichParentMatchData(parentMatch2Data),
+    parentMatch1Data 
+      ? enrichMatchWithTeams(parentMatch1Data) 
+      : Promise.resolve({ bracketMatch: null, match: null, teamA: null, teamB: null }),
+    parentMatch2Data 
+      ? enrichMatchWithTeams(parentMatch2Data) 
+      : Promise.resolve({ bracketMatch: null, match: null, teamA: null, teamB: null }),
   ])
 
   // Get teams for the current match
@@ -130,15 +121,7 @@ async function getBracketMatchDetails(
  * Get all bracket matches for a specific bracket with full details
  */
 async function getBracketMatchesWithDetails(bracketId: number): Promise<BracketMatchWithDetails[]> {
-  const bracketMatches = await db
-    .select({
-      bracketMatch: bracketMatch,
-      match: match,
-    })
-    .from(bracketMatch)
-    .leftJoin(match, eq(bracketMatch.id, match.bracketMatchId))
-    .where(eq(bracketMatch.bracketId, bracketId))
-
+  const bracketMatches = await fetchBracketMatches(eq(bracketMatch.bracketId, bracketId))
   return Promise.all(bracketMatches.map(getBracketMatchDetails))
 }
 
