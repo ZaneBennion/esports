@@ -2,11 +2,13 @@ import { db } from "@/lib/db"
 import { content, org } from "@/lib/db/schema"
 import { createContent } from "@/lib/actions/content"
 import styles from "./page.module.css"
-import { getOrgById } from "@/lib/actions/orgs"
 
 export default async function Content() {
-  const contents = await db.select().from(content)
-  const orgs = await db.select().from(org)
+  // Fetch contents and orgs in parallel for better performance
+  const [contents, orgs] = await Promise.all([
+    db.select().from(content),
+    db.select().from(org)
+  ])
   const orgMap = new Map(orgs.map(o => [o.id, o]))
 
   return (

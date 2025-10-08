@@ -6,8 +6,11 @@ import PlayersColumn from './components/PlayersColumn';
 import styles from './page.module.css';
 
 export default async function Admin() {
-  const games = await getAllGames();
-  const orgs = await getAllOrgs();
+  // Fetch games and orgs in parallel for better performance
+  const [games, orgs] = await Promise.all([
+    getAllGames(),
+    getAllOrgs()
+  ]);
 
   return (
     <div className={styles.container}>

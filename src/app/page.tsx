@@ -1,7 +1,9 @@
+import { Suspense } from 'react'
 import { db } from '@/lib/db'
-import { game, event, match, org, player, content } from '@/lib/db/schema'
+import { game, content } from '@/lib/db/schema'
 import { GameCard } from '@/components/game-card'
 import { ContentCard } from '@/components/content-card'
+import { GamesSkeleton, ContentGridSkeleton } from '@/components/skeletons'
 import Link from 'next/link'
 import styles from './page.module.css'
 
@@ -12,41 +14,26 @@ const REGIONS = [
   { href: '/orgs/cn', label: 'CN' },
 ]
 
-export default async function Home() {
-  // Fetch data from tables
-  const games = await db.select().from(game)
-  const contents = await db.select().from(content)
-  
+export default function Home() {
   return (
     <div className={styles.container}>
       {/* Main Content */}
       <main className={styles.main}>
-        {/* Organization Content Cards Section */}
-        <section className={styles.contentSection}>
-          <div className={styles.contentGrid}>
-            {contents.map((content) => (
-              <ContentCard key={content.id} content={content} />
-            ))}
-          </div>
-        </section>
+        {/* Organization Content Cards Section - streams independently */}
+        <Suspense fallback={<ContentGridSkeleton />}>
+          <ContentSection />
+        </Suspense>
         
         <hr className={styles.divider} />
 
         {/* Games and Regions Section */}
         <div className={styles.gamesRegionsContainer}>
-          {/* Games Section */}
-          <section className={styles.gamesSection}>
-            <div className={styles.gamesGrid}>
-              {games.map((game) => (
-                <GameCard key={game.id} game={game} />
-              ))}
-            </div>
-            {games.length === 0 && (
-              <p className={styles.noGames}>No games found in the database.</p>
-            )}
-          </section>
+          {/* Games Section - streams independently */}
+          <Suspense fallback={<GamesSkeleton />}>
+            <GamesSection />
+          </Suspense>
 
-          {/* Regions Section - Desktop Sidebar */}
+          {/* Regions Section - Desktop Sidebar (renders immediately) */}
           <aside className={styles.regionsSidebar}>
             {REGIONS.map((region) => (
               <Link
@@ -61,7 +48,7 @@ export default async function Home() {
         </div>
       </main>
 
-      {/* Mobile Footer - Regions */}
+      {/* Mobile Footer - Regions (renders immediately) */}
       <footer className={styles.mobileFooter}>
         <div className={styles.footerContent}>
           {REGIONS.toReversed().map((region) => (
@@ -76,5 +63,36 @@ export default async function Home() {
         </div>
       </footer>
     </div>
+  )
+}
+
+async function ContentSection() {
+  const contents = await db.select().from(content)
+  
+  return (
+    <section className={styles.contentSection}>
+      <div className={styles.contentGrid}>
+        {contents.map((content) => (
+          <ContentCard key={content.id} content={content} />
+        ))}
+      </div>
+    </section>
+  )
+}
+
+async function GamesSection() {
+  const games = await db.select().from(game)
+  
+  return (
+    <section className={styles.gamesSection}>
+      <div className={styles.gamesGrid}>
+        {games.map((game) => (
+          <GameCard key={game.id} game={game} />
+        ))}
+      </div>
+      {games.length === 0 && (
+        <p className={styles.noGames}>No games found in the database.</p>
+      )}
+    </section>
   )
 }

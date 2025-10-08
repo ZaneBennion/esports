@@ -4,8 +4,11 @@ import { createEvent } from "@/lib/actions/events"
 import styles from "./page.module.css"
 
 export default async function Events() {
-  const events = await db.select().from(event)
-  const games = await db.select().from(game)
+  // Fetch events and games in parallel for better performance
+  const [events, games] = await Promise.all([
+    db.select().from(event),
+    db.select().from(game)
+  ])
   const gameMap = new Map(games.map(g => [g.id, g]))
 
   return (
