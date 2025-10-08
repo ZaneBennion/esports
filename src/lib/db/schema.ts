@@ -31,15 +31,21 @@ export const bracket = pgTable('bracket', {
   name: text().notNull(),
 })
 
+export const stage = pgTable('stage', {
+  id: integer().primaryKey().generatedAlwaysAsIdentity(),
+  eventId: integer('event_id').references(() => event.id).notNull(),
+  name: text().notNull(),
+})
+
 export const tableMatch = pgTable('table_match', {
   id: integer().primaryKey().generatedAlwaysAsIdentity(),
-  bracketId: integer('bracket_id').references(() => bracket.id).notNull(),
+  stageId: integer('stage_id').references(() => stage.id).notNull(),
   team: integer('team_id').references(() => org.id).notNull(),
 })
 
 export const bracketMatch = pgTable('bracket_match', {
   id: integer().primaryKey().generatedAlwaysAsIdentity(),
-  bracketId: integer('bracket_id').references(() => bracket.id).notNull(),
+  stageId: integer('stage_id').references(() => stage.id).notNull(),
   roundNumber: integer('round_number').notNull(),
   matchInRound: integer('match_in_round').notNull(),
   parentMatch1Id: integer('parent_match_1_id').references((): any => bracketMatch.id),
@@ -47,13 +53,13 @@ export const bracketMatch = pgTable('bracket_match', {
   advanceWinner1: boolean('advance_winner_1'), // true if winner advances from parentMatch1, false if loser advances
   advanceWinner2: boolean('advance_winner_2'), // true if winner advances from parentMatch2, false if loser advances
 }, (table) => [
-  uniqueIndex('unique_bracket_position').on(table.bracketId, table.roundNumber, table.matchInRound),
+  uniqueIndex('unique_bracket_position').on(table.stageId, table.roundNumber, table.matchInRound),
 ])
 
 export const match = pgTable('match', {
   id: integer().primaryKey().generatedAlwaysAsIdentity(),
   bracketMatchId: integer('bracket_match_id').references(() => bracketMatch.id),
-  bracketId: integer('bracket_id').references(() => bracket.id),
+  stageId: integer('stage_id').references(() => stage.id),
   teamAId: integer('team_a_id').references(() => org.id),
   teamBId: integer('team_b_id').references(() => org.id),
   teamAScore: integer('team_a_score'),
@@ -90,6 +96,7 @@ export type UserRole = typeof userRoles.$inferSelect
 export type Game = typeof game.$inferSelect
 export type Event = typeof event.$inferSelect
 export type Bracket = typeof bracket.$inferSelect
+export type Stage = typeof stage.$inferSelect
 export type TableMatch = typeof tableMatch.$inferSelect
 export type Match = typeof match.$inferSelect
 export type Org = typeof org.$inferSelect
