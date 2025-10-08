@@ -31,6 +31,12 @@ export const bracket = pgTable('bracket', {
   name: text().notNull(),
 })
 
+export const tableMatch = pgTable('table_match', {
+  id: integer().primaryKey().generatedAlwaysAsIdentity(),
+  bracketId: integer('bracket_id').references(() => bracket.id).notNull(),
+  team: integer('team_id').references(() => org.id).notNull(),
+})
+
 export const bracketMatch = pgTable('bracket_match', {
   id: integer().primaryKey().generatedAlwaysAsIdentity(),
   bracketId: integer('bracket_id').references(() => bracket.id).notNull(),
@@ -47,8 +53,9 @@ export const bracketMatch = pgTable('bracket_match', {
 export const match = pgTable('match', {
   id: integer().primaryKey().generatedAlwaysAsIdentity(),
   bracketMatchId: integer('bracket_match_id').references(() => bracketMatch.id),
-  teamAId: integer('team_a_id').references(() => org.id).notNull(),
-  teamBId: integer('team_b_id').references(() => org.id).notNull(),
+  bracketId: integer('bracket_id').references(() => bracket.id),
+  teamAId: integer('team_a_id').references(() => org.id),
+  teamBId: integer('team_b_id').references(() => org.id),
   teamAScore: integer('team_a_score'),
   teamBScore: integer('team_b_score'),
   result: text(), // 'team_a' | 'team_b' | 'draw' | null (null = not yet played)
@@ -83,6 +90,7 @@ export type UserRole = typeof userRoles.$inferSelect
 export type Game = typeof game.$inferSelect
 export type Event = typeof event.$inferSelect
 export type Bracket = typeof bracket.$inferSelect
+export type TableMatch = typeof tableMatch.$inferSelect
 export type Match = typeof match.$inferSelect
 export type Org = typeof org.$inferSelect
 export type Player = typeof player.$inferSelect
