@@ -89,24 +89,6 @@ export async function getEventById(eventId: number) {
   return result.length > 0 ? result[0] : null
 }
 
-export async function getEventRoute(eventId: number) {
-  const eventData = await db
-    .select({
-      eventSlug: event.slug,
-    })
-    .from(event)
-    .where(eq(event.id, eventId))
-    .limit(1)
-
-  if (eventData.length === 0) {
-    return null
-  }
-
-  const { eventSlug } = eventData[0]
-
-  return `/event/${eventId}/${eventSlug}`
-}
-
 export async function createEvent(formData: FormData) {
   const name = formData.get('name') as string
   const slug = name.toLowerCase().replace(/\s+/g, '');

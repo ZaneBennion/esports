@@ -1,6 +1,7 @@
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
-import { getOrgsByRegion, getOrgRoute } from '@/lib/actions/orgs'
+import { getOrgsByRegion } from '@/lib/actions/orgs'
+import { buildOrgRoute } from '@/lib/utils/routes'
 
 interface RegionPageProps {
   params: Promise<{
@@ -28,12 +29,10 @@ export default async function RegionPage({ params }: RegionPageProps) {
   const regionName = REGION_NAMES[orgid] || orgid.toUpperCase()
 
   // Get routes for all orgs
-  const orgsWithRoutes = await Promise.all(
-    orgs.map(async (org) => ({
-      ...org,
-      route: await getOrgRoute(org.id),
-    }))
-  )
+  const orgsWithRoutes = orgs.map((org) => ({
+    ...org,
+    route: buildOrgRoute(org.id, org.slug),
+  }))
 
   return (
     <div className="min-h-screen p-8">

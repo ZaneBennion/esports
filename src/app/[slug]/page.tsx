@@ -2,7 +2,7 @@ import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import { getGameBySlug, getEventsForGame } from '@/lib/actions/games'
 import { getGameLogoPath } from '@/lib/utils/logos'
-import { getEventRoute } from '@/lib/actions/events'
+import { buildEventRoute } from '@/lib/utils/routes'
 
 interface GamePageProps {
   params: Promise<{
@@ -21,12 +21,10 @@ export default async function GamePage({ params }: GamePageProps) {
   const events = await getEventsForGame(game.id)
   
   // Get event routes for all events
-  const eventsWithRoutes = await Promise.all(
-    events.map(async (event) => ({
-      ...event,
-      route: await getEventRoute(event.id),
-    }))
-  )
+  const eventsWithRoutes = events.map((event) => ({
+    ...event,
+    route: buildEventRoute(event.id, event.slug),
+  }))
 
   return (
     <div className="min-h-screen p-8">

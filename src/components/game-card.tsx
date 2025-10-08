@@ -1,5 +1,6 @@
 import { getGameLogoPath } from '@/lib/utils/logos'
-import { getLatestEventForGame, getEventRoute } from '@/lib/actions/events'
+import { getLatestEventForGame } from '@/lib/actions/events'
+import { buildEventRoute } from '@/lib/utils/routes'
 import Link from 'next/link'
 import styles from './game-card.module.css'
 
@@ -13,7 +14,7 @@ interface GameCardProps {
 
 export async function GameCard({ game }: GameCardProps) {
   const latestEvent = await getLatestEventForGame(game.id)
-  const eventRoute = latestEvent ? await getEventRoute(latestEvent.id) : null
+  const eventRoute = latestEvent ? buildEventRoute(latestEvent.id, latestEvent.slug) : null
 
   return (
     <div className={styles.card}>
