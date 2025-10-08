@@ -40,7 +40,6 @@ export const bracketMatch = pgTable('bracket_match', {
   parentMatch2Id: integer('parent_match_2_id').references((): any => bracketMatch.id),
   advanceWinner1: boolean('advance_winner_1'), // true if winner advances from parentMatch1, false if loser advances
   advanceWinner2: boolean('advance_winner_2'), // true if winner advances from parentMatch2, false if loser advances
-  matchTime: timestamp('match_time', {withTimezone: true}),
 }, (table) => [
   uniqueIndex('unique_bracket_position').on(table.bracketId, table.roundNumber, table.matchInRound),
 ])
@@ -54,6 +53,7 @@ export const match = pgTable('match', {
   teamBScore: integer('team_b_score'),
   result: text(), // 'team_a' | 'team_b' | 'draw' | null (null = not yet played)
   vodLink: text('vod_link'),
+  matchTime: timestamp('match_time', {withTimezone: true}),
 })
 
 export const org = pgTable('org', {
