@@ -25,12 +25,6 @@ export const event = pgTable('event', {
   endDate: date('end_date').notNull(),
 })
 
-export const bracket = pgTable('bracket', {
-  id: integer().primaryKey().generatedAlwaysAsIdentity(),
-  eventId: integer('event_id').references(() => event.id).notNull(),
-  name: text().notNull(),
-})
-
 export const stage = pgTable('stage', {
   id: integer().primaryKey().generatedAlwaysAsIdentity(),
   eventId: integer('event_id').references(() => event.id).notNull(),
@@ -95,7 +89,6 @@ export const player = pgTable('player', {
 export type UserRole = typeof userRoles.$inferSelect
 export type Game = typeof game.$inferSelect
 export type Event = typeof event.$inferSelect
-export type Bracket = typeof bracket.$inferSelect
 export type Stage = typeof stage.$inferSelect
 export type TableMatch = typeof tableMatch.$inferSelect
 export type Match = typeof match.$inferSelect
