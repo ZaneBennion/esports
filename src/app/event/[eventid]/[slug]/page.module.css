@@ -90,21 +90,3 @@
   color: var(--foreground);
 }
 
-.bracketsSection {
-  margin-top: 2rem;
-  padding-top: 2rem;
-  border-top: 1px solid var(--foreground);
-}
-
-.bracketsTitle {
-  font-size: 1.5rem;
-  font-weight: 600;
-  margin-bottom: 1rem;
-}
-
-.placeholder {
-  color: var(--foreground);
-  text-align: center;
-  padding: 2rem 0;
-}
-

@@ -1,5 +1,5 @@
 import { db } from '@/lib/db'
-import { game, event, bracket, match, org, player, content } from '@/lib/db/schema'
+import { game, event, match, org, player, content } from '@/lib/db/schema'
 import { GameCard } from '@/components/game-card'
 import { ContentCard } from '@/components/content-card'
 import Link from 'next/link'
