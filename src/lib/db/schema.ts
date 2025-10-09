@@ -29,6 +29,7 @@ export const stage = pgTable('stage', {
   id: integer().primaryKey().generatedAlwaysAsIdentity(),
   eventId: integer('event_id').references(() => event.id).notNull(),
   name: text().notNull(),
+  type: text().notNull(), // 'table' | 'bracket'
 })
 
 export const tableMatch = pgTable('table_match', {
