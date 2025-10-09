@@ -64,7 +64,7 @@ export function ContentGridSkeleton() {
         {[...Array(5)].map((_, i) => (
           <div key={i} className="w-[45%] min-w-[150px] md:w-auto text-[var(--foreground)] bg-[var(--background)] rounded-lg border border-gray-200 flex flex-col flex-shrink-0">
             {/* Organization Link Skeleton */}
-            <div className="text-sm p-1 pt-1 block font-medium rounded-t-lg flex justify-between items-center">
+            <div className="text-sm p-1 pt-1 font-medium rounded-t-lg flex justify-between items-center">
               <div className="h-4 w-[60%] bg-gray-200 rounded animate-pulse"></div>
             </div>
             
