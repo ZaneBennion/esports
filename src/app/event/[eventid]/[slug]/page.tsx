@@ -1,14 +1,59 @@
 import { notFound } from 'next/navigation'
-import Link from 'next/link'
 import { getEventById } from '@/lib/actions/events'
 import { getGameLogoPath } from '@/lib/utils/logos'
-import styles from './page.module.css'
 
 interface EventPageProps {
   params: Promise<{
     eventid: string
     slug: string
   }>
+}
+
+// Sub-component: Event Header
+function EventHeader({ gameName, gameLogoPath, eventName }: { 
+  gameName: string
+  gameLogoPath: string
+  eventName: string 
+}) {
+  return (
+    <div className="flex items-center gap-6 mb-6">
+      <img 
+        src={gameLogoPath} 
+        alt={`${gameName} logo`}
+        className="w-24 h-24 object-contain"
+      />
+      <div>
+        <div className="text-lg text-[var(--foreground)]/70 mb-2">{gameName}</div>
+        <h1 className="text-4xl font-bold">{eventName}</h1>
+      </div>
+    </div>
+  )
+}
+
+// Sub-component: Event Details
+function EventDetails({ startDate, endDate, slug }: { 
+  startDate: string
+  endDate: string
+  slug: string 
+}) {
+  return (
+    <div className="space-y-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="flex flex-col gap-2">
+          <h2 className="text-sm font-semibold text-[var(--foreground)]/70 uppercase tracking-wider">
+            Start Date
+          </h2>
+          <p className="text-lg">{startDate}</p>
+        </div>
+        <div className="flex flex-col gap-2">
+          <h2 className="text-sm font-semibold text-[var(--foreground)]/70 uppercase tracking-wider">
+            End Date
+          </h2>
+          <p className="text-lg">{endDate}</p>
+        </div>
+      </div>
+    </div>
+  )
 }
 
 export default async function EventPage({ params }: EventPageProps) {
@@ -27,45 +72,19 @@ export default async function EventPage({ params }: EventPageProps) {
   }
 
   return (
-    <div className={styles.container}>
-      <div className={styles.wrapper}>
-
-        <div className={styles.card}>
-          <div className={styles.header}>
-            <img 
-              src={getGameLogoPath(game.id)} 
-              alt={`${game.name} logo`}
-              className={styles.logo}
-            />
-            <div className={styles.headerContent}>
-              <div className={styles.gameName}>{game.name}</div>
-              <h1 className={styles.title}>{event.name}</h1>
-            </div>
-          </div>
-
-          <div className={styles.divider}>
-            <div className={styles.grid}>
-              <div className={styles.fieldGroup}>
-                <h2 className={styles.fieldLabel}>
-                  Start Date
-                </h2>
-                <p className={styles.fieldValue}>{event.startDate}</p>
-              </div>
-              <div className={styles.fieldGroup}>
-                <h2 className={styles.fieldLabel}>
-                  End Date
-                </h2>
-                <p className={styles.fieldValue}>{event.endDate}</p>
-              </div>
-            </div>
-
-            <div className={styles.slugSection}>
-              <h2 className={styles.fieldLabel}>
-                Event Slug
-              </h2>
-              <p className={styles.slugValue}>{event.slug}</p>
-            </div>
-          </div>
+    <div className="min-h-screen bg-[var(--background)] p-4 md:p-8">
+      <div className="max-w-4xl mx-auto">
+        <div className="bg-[var(--background)] rounded-xl p-6 md:p-8 border border-gray-200">
+          <EventHeader 
+            gameName={game.name} 
+            gameLogoPath={getGameLogoPath(game.id)} 
+            eventName={event.name} 
+          />
+          <EventDetails 
+            startDate={event.startDate} 
+            endDate={event.endDate} 
+            slug={event.slug} 
+          />
         </div>
       </div>
     </div>

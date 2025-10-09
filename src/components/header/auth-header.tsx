@@ -5,7 +5,33 @@ import { createClient } from '@/lib/supabase/client'
 import { getUserRole, type AppRole } from '@/lib/auth/rbac'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import styles from './auth-header.module.css'
+
+// Sub-component: Auth Button (reusable for links and buttons)
+function AuthButton({ 
+  children, 
+  onClick, 
+  href 
+}: { 
+  children: React.ReactNode
+  onClick?: () => void
+  href?: string 
+}) {
+  const className = "py-3 px-4 rounded-full text-[var(--foreground)] bg-[var(--background)] font-semibold text-center no-underline border border-gray-300 transition-all hover:border-gray-400"
+  
+  if (href) {
+    return (
+      <Link href={href} className={className}>
+        {children}
+      </Link>
+    )
+  }
+  
+  return (
+    <button onClick={onClick} className={className}>
+      {children}
+    </button>
+  )
+}
 
 export function AuthHeader() {
   const [user, setUser] = useState<{ email: string; role: AppRole } | null>(null)
@@ -45,38 +71,23 @@ export function AuthHeader() {
 
   // Prevent hydration mismatch by not rendering auth-dependent content until mounted
   if (!mounted) {
-    return <div className={styles.placeholder}></div>
+    return <div className="flex gap-4 w-[200px]"></div>
   }
 
   if (user) {
     return (
-      <div className={styles.container}>
+      <div className="flex items-center gap-3">
         {(user.role === 'admin' || user.role === 'super_admin') && (
-          <Link 
-            href="/admin"
-            className={styles.button}
-          >
-            Admin
-          </Link>
+          <AuthButton href="/admin">Admin</AuthButton>
         )}
-        <button
-          onClick={handleSignOut}
-          className={styles.button}
-        >
-          Sign Out
-        </button>
+        <AuthButton onClick={handleSignOut}>Sign Out</AuthButton>
       </div>
     )
   }
 
   return (
-    <div className={styles.container}>
-      <Link 
-        href="/auth/signin"
-        className={styles.button}
-      >
-        Sign In
-      </Link>
+    <div className="flex items-center gap-3">
+      <AuthButton href="/auth/signin">Sign In</AuthButton>
     </div>
   )
 }

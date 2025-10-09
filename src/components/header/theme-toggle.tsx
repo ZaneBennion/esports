@@ -1,13 +1,12 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import styles from './theme-toggle.module.css'
 
 // Sun Icon Component
 function SunIcon() {
   return (
     <svg
-      className={styles.icon}
+      className="w-5 h-5 flex-shrink-0"
       viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"
@@ -25,7 +24,7 @@ function SunIcon() {
 function MoonIcon() {
   return (
     <svg
-      className={styles.icon}
+      className="w-5 h-5 flex-shrink-0"
       viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"
@@ -67,7 +66,7 @@ export function ThemeToggle() {
   // Prevent hydration mismatch
   if (!mounted) {
     return (
-      <button className={styles.themeToggle}>
+      <button className="p-4 rounded-full text-[var(--foreground)] cursor-pointer flex items-center border border-gray-300 transition-all">
         Theme
       </button>
     )
@@ -76,18 +75,10 @@ export function ThemeToggle() {
   return (
     <button
       onClick={toggleTheme}
-      className={styles.themeToggle}
+      className="p-4 rounded-full text-[var(--foreground)] cursor-pointer flex items-center border border-gray-300 transition-all hover:border-gray-400"
       aria-label="Toggle theme"
     >
-      {theme === 'light' ? (
-        <>
-          <MoonIcon />
-        </>
-      ) : (
-        <>
-          <SunIcon />
-        </>
-      )}
+      {theme === 'light' ? <MoonIcon /> : <SunIcon />}
     </button>
   )
 }

@@ -1,8 +1,6 @@
 import { getAllGames, getEventsForGame } from '@/lib/actions/games';
 import { notFound } from 'next/navigation';
 import EventsManager from './components/EventsManager';
-import Link from 'next/link';
-import styles from './page.module.css';
 
 export default async function GameEventsPage({
   params,
@@ -28,9 +26,9 @@ export default async function GameEventsPage({
   }
 
   return (
-    <div className={styles.container}>
-      <div className={styles.header}>
-        <h1 className={styles.title}>{game.name} Events</h1>
+    <div className="p-4 md:p-8 bg-background text-foreground">
+      <div className="max-w-full text-center mb-6">
+        <h1 className="text-4xl font-bold">{game.name} Events</h1>
       </div>
 
       <EventsManager game={game} events={events} />
