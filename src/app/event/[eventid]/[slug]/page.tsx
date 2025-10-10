@@ -1,6 +1,13 @@
+import { Suspense } from 'react'
 import { notFound } from 'next/navigation'
 import { getEventById } from '@/lib/actions/events'
 import { getGameLogoPath } from '@/lib/utils/logos'
+import { getStagesByEventId } from '@/lib/actions/stages'
+import { getTableStageData } from '@/lib/actions/table-matches'
+import { getBracketStageData } from '@/lib/actions/bracket-matches'
+import Tabs, { type Tab } from '@/components/tabs'
+import { TableStage } from '@/components/table-stage'
+import { BracketStage } from '@/components/bracket-stage'
 
 interface EventPageProps {
   params: Promise<{
@@ -56,6 +63,56 @@ function EventDetails({ startDate, endDate, slug }: {
   )
 }
 
+// Sub-component: Loading indicator
+function LoadingStage() {
+  return (
+    <div className="text-center py-8 text-[var(--foreground)]/70">
+      Loading...
+    </div>
+  )
+}
+
+// Sub-component: Table Stage Data Loader
+async function TableStageContent({ stageId }: { stageId: number }) {
+  const standings = await getTableStageData(stageId)
+  return <TableStage standings={standings} />
+}
+
+// Sub-component: Bracket Stage Data Loader
+async function BracketStageContent({ stageId }: { stageId: number }) {
+  const rounds = await getBracketStageData(stageId)
+  return <BracketStage rounds={rounds} />
+}
+
+// Sub-component: Stages Section
+async function StagesSection({ eventId }: { eventId: number }) {
+  const stages = await getStagesByEventId(eventId)
+
+  if (stages.length === 0) {
+    return (
+      <div className="text-center py-8 text-[var(--foreground)]/70">
+        No stages found for this event.
+      </div>
+    )
+  }
+
+  const tabs: Tab[] = stages.map((stage) => ({
+    id: stage.id.toString(),
+    label: stage.name,
+    content: (
+      <Suspense fallback={<LoadingStage />}>
+        {stage.type === 'table' ? (
+          <TableStageContent stageId={stage.id} />
+        ) : (
+          <BracketStageContent stageId={stage.id} />
+        )}
+      </Suspense>
+    ),
+  }))
+
+  return <Tabs tabs={tabs} />
+}
+
 export default async function EventPage({ params }: EventPageProps) {
   const { eventid, slug: eventSlug } = await params
   const data = await getEventById(parseInt(eventid))
@@ -85,6 +142,13 @@ export default async function EventPage({ params }: EventPageProps) {
             endDate={event.endDate} 
             slug={event.slug} 
           />
+        </div>
+
+        {/* Stages Section */}
+        <div className="mt-6 bg-[var(--background)] rounded-xl p-6 md:p-8 border border-gray-200">
+          <Suspense fallback={<LoadingStage />}>
+            <StagesSection eventId={event.id} />
+          </Suspense>
         </div>
       </div>
     </div>
