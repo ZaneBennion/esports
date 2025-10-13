@@ -62,11 +62,10 @@ function FormSection({ onSubmit, isSubmitting }: { onSubmit: (e: React.FormEvent
 // Sub-component: Event Card
 function EventCard({ event, formatDate, onEventClick }: { event: Event, formatDate: (date: string) => string, onEventClick: (event: Event) => void }) {
   return (
-    <div className="p-4 rounded-lg bg-[var(--foreground)]/[0.03] border border-foreground/10"
+    <div className="p-4 rounded-lg bg-[var(--foreground)]/[0.03] border border-foreground/10 transition-all hover:bg-[var(--foreground)]/[0.08]"
       onClick={() => onEventClick(event)}>
       <div className="mb-3">
         <h3 className="text-lg font-semibold mb-1">{event.name}</h3>
-        <span className="text-xs text-foreground/50">{event.slug}</span>
       </div>
       <div className="flex flex-col gap-2">
         <div className="flex items-center gap-2">
