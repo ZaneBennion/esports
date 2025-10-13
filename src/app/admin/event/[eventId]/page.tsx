@@ -1,5 +1,6 @@
 import { getEventById } from "@/lib/actions/events"
 import { notFound } from "next/navigation"
+import EventEditor from "./components/EventEditor"
 
 interface EventPageProps {
   params: Promise<{
@@ -18,9 +19,9 @@ export default async function Admin({ params }: EventPageProps){
   const { event, game } = data
 
   return (
-    <div>
-      <h1>{game.name}</h1>
-      <div>{event.name}</div>
+    <div className="p-6">
+      <div>{game.name}</div>
+      <EventEditor event={event} />
     </div>
   )
 }

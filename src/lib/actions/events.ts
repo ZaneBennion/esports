@@ -106,3 +106,21 @@ export async function createEvent(formData: FormData) {
 
   revalidatePath(`/admin/games/${gameId}`)
 }
+
+export async function updateEvent(eventId: number, formData: FormData) {
+  const name = formData.get('name') as string
+  const slug = name.toLowerCase().replace(/\s+/g, '');
+  const startDate = formData.get('startDate') as string
+  const endDate = formData.get('endDate') as string
+
+  await db.update(event)
+    .set({
+      name,
+      slug,
+      startDate,
+      endDate,
+    })
+    .where(eq(event.id, eventId))
+
+  revalidatePath(`/admin/event/${eventId}`)
+}

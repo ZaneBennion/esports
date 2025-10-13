@@ -16,6 +16,16 @@ export async function getAllGames() {
   return games
 }
 
+export async function getGameById(gameId:number) {
+  const result = await db
+    .select()
+    .from(game)
+    .where(eq(game.id, gameId))
+    .limit(1)
+
+  return result.length > 0 ? result[0] : null
+}
+
 export async function getGameBySlug(slug: string) {
   const games = await db
     .select()
