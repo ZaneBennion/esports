@@ -16,7 +16,7 @@ function AdminHeader() {
 // Sub-component: Columns Grid
 function ColumnsGrid({ children }: { children: React.ReactNode }) {
   return (
-    <div className="grid grid-cols-1 xl:grid-cols-2 2xl:grid-cols-3 gap-6 max-w-full mx-auto">
+    <div className="grid grid-cols-1 xl:grid-cols-3 gap-6 max-w-full mx-auto">
       {children}
     </div>
   )
