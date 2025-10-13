@@ -3,6 +3,7 @@
 import { Game, Event } from '@/lib/db/schema';
 import { createEvent } from '@/lib/actions/events';
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 
 // Sub-component: Form Section
 function FormSection({ onSubmit, isSubmitting }: { onSubmit: (e: React.FormEvent<HTMLFormElement>) => void, isSubmitting: boolean }) {
@@ -59,9 +60,10 @@ function FormSection({ onSubmit, isSubmitting }: { onSubmit: (e: React.FormEvent
 }
 
 // Sub-component: Event Card
-function EventCard({ event, formatDate }: { event: Event, formatDate: (date: string) => string }) {
+function EventCard({ event, formatDate, onEventClick }: { event: Event, formatDate: (date: string) => string, onEventClick: (event: Event) => void }) {
   return (
-    <div className="p-4 rounded-lg bg-[var(--foreground)]/[0.03] border border-foreground/10">
+    <div className="p-4 rounded-lg bg-[var(--foreground)]/[0.03] border border-foreground/10"
+      onClick={() => onEventClick(event)}>
       <div className="mb-3">
         <h3 className="text-lg font-semibold mb-1">{event.name}</h3>
         <span className="text-xs text-foreground/50">{event.slug}</span>
@@ -88,6 +90,7 @@ export default function EventsManager({
   events: Event[];
 }) {
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -119,6 +122,10 @@ export default function EventsManager({
     return new Date(b.startDate).getTime() - new Date(a.startDate).getTime();
   });
 
+  const handleEventClick = (event: Event) => {
+    router.push(`/admin/event/${event.id}`);
+  };
+
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
       <FormSection onSubmit={handleSubmit} isSubmitting={isSubmitting} />
@@ -130,7 +137,7 @@ export default function EventsManager({
         ) : (
           <div className="flex flex-col gap-3">
             {sortedEvents.map((event) => (
-              <EventCard key={event.id} event={event} formatDate={formatDate} />
+              <EventCard key={event.id} event={event} formatDate={formatDate} onEventClick={handleEventClick}/>
             ))}
           </div>
         )}
