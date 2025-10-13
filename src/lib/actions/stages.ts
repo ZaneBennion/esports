@@ -9,6 +9,7 @@ export async function getStagesByEventId(eventId: number) {
     .select()
     .from(stage)
     .where(eq(stage.eventId, eventId))
+    .orderBy(stage.order)
 
   return stages
 }

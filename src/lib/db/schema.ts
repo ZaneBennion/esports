@@ -1,3 +1,4 @@
+import { or } from 'drizzle-orm'
 import { pgTable, text, integer, boolean, date, timestamp, uniqueIndex, bigint, uuid, pgEnum } from 'drizzle-orm/pg-core'
 
 // Note: user_roles table and app_role enum are managed by Supabase migration (rbac_setup.sql)
@@ -30,6 +31,7 @@ export const stage = pgTable('stage', {
   eventId: integer('event_id').references(() => event.id).notNull(),
   name: text().notNull(),
   type: text().notNull(), // 'table' | 'bracket'
+  order: integer().notNull(), // order of the stage within the event
 })
 
 export const tableMatch = pgTable('table_match', {
