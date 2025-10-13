@@ -1,13 +1,17 @@
 'use server'
 
-import { createAdminClient } from '../supabase/admin'
+import { createClient } from '../supabase/server'
 
+/**
+ * Upload an image to Supabase Storage
+ * Uses authenticated client - permissions are enforced via RLS policies
+ */
 export async function uploadImage(logoFile: File, id: number, type: string) {
   if (!logoFile || logoFile.size === 0) {
     return
   }
 
-  const supabase = createAdminClient()
+  const supabase = await createClient()
   const arrayBuffer = await logoFile.arrayBuffer()
   const buffer = Buffer.from(arrayBuffer)
 

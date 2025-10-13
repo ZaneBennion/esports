@@ -2,8 +2,16 @@ import { createClient } from '@supabase/supabase-js'
 
 /**
  * Admin Supabase client with service role privileges
- * This bypasses RLS and should ONLY be used in secure server-side contexts
- * for administrative operations
+ * 
+ * ⚠️ WARNING: This bypasses ALL RLS policies!
+ * 
+ * ONLY use this for:
+ * - System operations with no user context (cron jobs, background tasks)
+ * - Truly administrative operations that must bypass all security
+ * - Operations that cannot be secured via RLS
+ * 
+ * For most operations, use the regular server client (../supabase/server.ts)
+ * which respects RLS policies and uses the authenticated user's JWT (including their role).
  */
 export function createAdminClient() {
   return createClient(
