@@ -4,6 +4,7 @@ import { Game, Event } from '@/lib/db/schema';
 import { createEvent } from '@/lib/actions/events';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { formatDate } from '@/lib/utils/date';
 
 // Sub-component: Form Section
 function FormSection({ onSubmit, isSubmitting }: { onSubmit: (e: React.FormEvent<HTMLFormElement>) => void, isSubmitting: boolean }) {
@@ -106,14 +107,6 @@ export default function EventsManager({
     } finally {
       setIsSubmitting(false);
     }
-  };
-
-  const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-    });
   };
 
   // Sort events by start date (newest first)

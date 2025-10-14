@@ -8,6 +8,7 @@ import { getBracketStageData } from '@/lib/actions/bracket-matches'
 import Tabs, { type Tab } from '@/components/tabs'
 import { TableStage } from '@/components/table-stage'
 import { BracketStage } from '@/components/bracket-stage'
+import { formatDate } from '@/lib/utils/date'
 
 interface EventPageProps {
   params: Promise<{
@@ -50,13 +51,13 @@ function EventDetails({ startDate, endDate, slug }: {
           <h2 className="text-sm font-semibold text-[var(--foreground)]/70 uppercase tracking-wider">
             Start Date
           </h2>
-          <p className="text-lg">{startDate}</p>
+          <p className="text-lg">{formatDate(startDate)}</p>
         </div>
         <div className="flex flex-col gap-2">
           <h2 className="text-sm font-semibold text-[var(--foreground)]/70 uppercase tracking-wider">
             End Date
           </h2>
-          <p className="text-lg">{endDate}</p>
+          <p className="text-lg">{formatDate(endDate)}</p>
         </div>
       </div>
     </div>

@@ -1,6 +1,7 @@
 import { getGameLogoPath } from '@/lib/utils/logos'
 import { getLatestEventForGame } from '@/lib/actions/events'
 import { buildEventRoute } from '@/lib/utils/routes'
+import { formatDate } from '@/lib/utils/date'
 import Link from 'next/link'
 
 interface GameCardProps {
@@ -39,7 +40,7 @@ function EventInfo({ event, eventRoute }: {
         <Link href={eventRoute} className="text-[var(--foreground)] no-underline">
           <p className="font-medium mb-1">{event.name}</p>
           <p className="text-sm text-[var(--foreground)]">
-            {event.startDate} - {event.endDate}
+            {formatDate(event.startDate)} - {formatDate(event.endDate)}
           </p>
         </Link>
       ) : (

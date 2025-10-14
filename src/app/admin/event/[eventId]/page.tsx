@@ -61,10 +61,12 @@ export default async function Admin({ params }: EventPageProps){
   const { event, game } = data
 
   return (
-    <div className="p-6">
-      <div>{game.name}</div>
-      <EventEditor event={event} />
-      <StagesSection eventId={event.id}/>
+    <div className="flex justify-center items-center">
+      <div className="max-w-[80rem] p-6 w-full"> 
+        <div>{game.name}</div>
+        <EventEditor event={event} />
+        <StagesSection eventId={event.id}/>
+      </div>
     </div>
   )
 }
