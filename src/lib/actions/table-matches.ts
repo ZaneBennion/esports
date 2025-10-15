@@ -3,6 +3,7 @@
 import { db } from '@/lib/db'
 import { tableMatch, match, org } from '@/lib/db/schema'
 import { eq } from 'drizzle-orm'
+import { revalidatePath } from 'next/cache'
 
 export async function getTableStageData(stageId: number) {
   // Get all teams in this stage
@@ -55,3 +56,21 @@ export async function getTableStageData(stageId: number) {
   return standings
 }
 
+export async function getTableTeamsById(stageId: number) {
+  const tableMatches = await db
+    .select({
+      tableMatch: tableMatch,
+      team: org,
+    })
+    .from(tableMatch)
+    .innerJoin(org, eq(tableMatch.team, org.id))
+    .where(eq(tableMatch.stageId, stageId))
+
+  return tableMatches
+}
+
+export async function deleteTableMatch(tableMatchId: number){
+  await db
+    .delete(tableMatch)
+    .where(eq(tableMatch.id, tableMatchId))
+}

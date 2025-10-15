@@ -40,9 +40,9 @@ async function StagesSection({ eventId }: { eventId: number }) {
     content: (
       <Suspense fallback={<LoadingStage />}>
         {stage.type === 'table' ? (
-          <TableEditor/>
+          <TableEditor stageId={stage.id}/>
         ) : (
-          <BracketEditor/>
+          <BracketEditor stageId={stage.id}/>
         )}
       </Suspense>
     ),
